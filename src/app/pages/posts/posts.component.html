@@ -1,0 +1,172 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-8">
+      <app-article-card
+        *ngFor="let article of articles"
+        [article]="article"
+        [auth_user]="auth_user"
+				(likeArticle)="onLikeArticle(article._id)"
+				(dislikeArticle)="onDisLikeArticle(article._id)"
+				(addOrRemoveBookmark)="onAddToBookmarksClicked(article)"
+				(editArticle)="onEditPost(article)"
+				(deleteArticle)="onDeleteArticle(article._id)"
+      ></app-article-card>
+      <!-- <mat-card class="example-card mb-3" *ngFor="let art of articles">
+        <mat-card-header>
+          <div
+            mat-card-avatar
+            [routerLink]="['/account', art?.user?.username]"
+            [ngStyle]="{
+              'background-image':
+                'url(' +
+                (art.user?.imageUrl ? art.user?.imageUrl : defaultImage) +
+                ')',
+              'background-size': 'cover',
+              cursor: 'pointer'
+            }"
+            class="example-header-image"
+          ></div>
+          <mat-card-title class="title">
+            <a
+              style="cursor: pointer; text-decoration: none;color: #000000;"
+              [routerLink]="['/account/articles', art._id]"
+              >{{ art.title }}</a
+            ></mat-card-title
+          >
+          <mat-card-subtitle
+            [routerLink]="['/account', art?.user?.username]"
+            style="cursor: pointer"
+            >{{ art?.user.name }}</mat-card-subtitle
+          >
+          <span class="ml-auto mr-3" *ngIf="auth_user">
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="menu"
+              aria-label="Example icon-button with a menu"
+            >
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button *ngIf="auth_user._id === art.user._id" mat-menu-item (click)="onEditPost(art)">
+                <mat-icon color="primary">edit</mat-icon>
+                <span>EDIT</span>
+              </button>
+              <button *ngIf="auth_user._id === art.user._id" mat-menu-item (click)="onDeleteArticle(art._id)">
+                <mat-icon color="warn">delete</mat-icon>
+                <span>DELETE</span>
+              </button>
+              <button mat-menu-item (click)="onAddToBookmarksClicked(art)">
+                <mat-icon color="accent">{{
+                  checkIfArticleBookmarked(art) ? "star" : "star_border"
+                }}</mat-icon>
+                <span>{{
+                  checkIfArticleBookmarked(art)
+                    ? "Remove From Bookmarks"
+                    : "Add To Bookmarks"
+                }}</span>
+              </button>
+            </mat-menu>
+          </span>
+        </mat-card-header>
+        <img
+          mat-card-image
+          class="img-article"
+          [src]="art.article_image"
+          [alt]="'title'"
+        />
+        <mat-card-content>
+          <p>{{ art.sub_title }}</p>
+        </mat-card-content>
+        <mat-card-actions class="action-buttons" *ngIf="auth_user">
+          <div class="dropdown">
+            <button
+              mat-button
+              color="primary"
+              [disabled]="disableIfLiked(art).isLiked"
+              (click)="onLikeArticle(art?._id)"
+            >
+              <mat-icon
+                class="mat-18 mb-3"
+                [svgIcon]="
+                  disableIfLiked(art).isLiked
+                    ? 'thumb_up_filled'
+                    : 'thumb_up_outline'
+                "
+              ></mat-icon>
+              Likes {{ disableIfLiked(art).count }}
+            </button>
+            <div class="dropdown-content">
+              <a
+                style="width: max-content"
+                *ngFor="let liker of allLikedOrDisliked(art).likers"
+                [routerLink]="['/account', liker.user.username]"
+                >{{ liker.user.name }}</a
+              >
+            </div>
+          </div>
+          <div class="dropdown">
+            <button
+              mat-button
+              color="primary"
+              [disabled]="disableIfDisLiked(art).isdisLiked"
+              (click)="onDisLikeArticle(art?._id)"
+            >
+              <mat-icon
+                class="mat-18 mb-2"
+                [svgIcon]="
+                  disableIfDisLiked(art).isdisLiked
+                    ? 'thumb_down_filled'
+                    : 'thumb_down_outline'
+                "
+              ></mat-icon>
+              DisLikes {{ disableIfDisLiked(art).count }}
+            </button>
+            <div class="dropdown-content">
+              <a
+                *ngFor="let disliker of allLikedOrDisliked(art).dislikers"
+                [routerLink]="['/account', disliker.user.username]"
+                >{{ disliker.user.name }}</a
+              >
+            </div>
+          </div>
+          <button mat-button (click)="commentsFragment(art._id)">
+            <mat-icon class="mat-18" color="primary">comment</mat-icon> Comment
+          </button>
+          <a
+            mat-button
+            class="ml-auto mr-3"
+						style="text-decoration: none;"
+            (click)="openCommentsDialog(art.comments)"
+          >
+            {{ art?.comments?.length }} Comments
+          </a>
+        </mat-card-actions>
+      </mat-card> -->
+    </div>
+    <div class="col-lg-4 col-md-4">
+      <div class="card my-2">
+        <h5 class="card-header">Search</h5>
+        <div class="card-body">
+          <search-form
+            [searchString]="searchString"
+            (searchSubmitted)="onSearchSubmitted($event)"
+          ></search-form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="paginator-container">
+  <mat-paginator
+    #paginator
+    (page)="handlePageEvent($event)"
+    [length]="articles_count"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    [showFirstLastButtons]="showFirstLastButtons"
+    [pageIndex]="pageIndex"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+</div>

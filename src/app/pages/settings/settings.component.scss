@@ -1,0 +1,200 @@
+.container {
+  max-width: 800px;
+  margin: auto;
+}
+
+mat-spinner {
+	margin: autox;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.current-image {
+	width: 18rem;
+	height: 18rem;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.image-preview {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+}
+
+.update-btn {
+  width: 100%;
+  margin-top: 10px;
+  background-color: #1f558f;
+  color: #fff;
+  border: none; /* Remove default button border */
+  padding: 10px; /* Add padding for better visibility */
+  border-radius: 5px; /* Add border radius for rounded corners */
+  cursor: pointer; /* Change cursor to pointer on hover */
+	transition: background-color 0.3s ease;
+}
+
+.update-btn:hover {
+  background-color: #0f3d6d;
+}
+
+.update-btn:active {
+  background-color: #0a2a4e;
+}
+
+.dismiss-btn {
+  margin-top: 10px;
+}
+
+::ng-deep {
+	.mat-dialog-content {
+		max-height: unset;
+	}
+
+	.mat-tab-body-content {
+		overflow: visible !important;
+	}
+
+	.mat-tab-body-wrapper {
+		height: 238vh;
+	}
+}
+
+
+
+// .file-input-container {
+//   position: relative;
+// }
+
+
+
+.file-input-container {
+  position: relative;
+}
+
+.image-preview {
+  position: relative;
+  display: inline-block;
+}
+
+.new-image {
+  max-width: 100%;
+  max-height: 300px; /* Adjust as needed */
+}
+
+.dismiss-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  padding: 5px;
+}
+
+
+/* Style for the file input label */
+.file-input-label {
+  display: inline-block;
+  border: 2px solid #1f558f; /* Border color */
+  border-radius: 5px;
+  padding: 10px 15px; /* Padding */
+  cursor: pointer;
+  background-color: #fff; /* Background color */
+  color: #1f558f; /* Text color */
+  font-size: 16px; /* Font size */
+  font-weight: bold; /* Font weight */
+  transition: background-color 0.3s, color 0.3s; /* Transition effect */
+}
+
+/* Hover effect for the file input label */
+.file-input-label:hover {
+  background-color: #1f558f; /* Background color on hover */
+  color: #fff; /* Text color on hover */
+}
+
+/* Styling for the file input element (hidden) */
+.file-input-label input[type="file"] {
+  display: none; /* Hide the input element */
+}
+
+/* Style for the file name display */
+.file-name {
+  margin-top: 10px; /* Spacing between label and file name */
+  font-size: 14px; /* Font size */
+  color: #555; /* Text color */
+}
+
+// /* Style for the clear button */
+// .clear-button {
+//   position: absolute;
+//   top: 10px;
+//   right: 10px;
+//   color: #ff6347; /* Red color */
+//   font-size: 14px; /* Font size */
+//   cursor: pointer;
+//   transition: color 0.3s; /* Transition effect */
+// }
+
+// /* Hover effect for the clear button */
+// .clear-button:hover {
+//   color: #ff0000; /* Darker red color on hover */
+// }
+
+
+
+// .file-input-label {
+//   display: inline-block;
+//   border: 2px solid #1f558f; /* Border color */
+//   border-radius: 5px;
+//   padding: 10px 15px; /* Padding */
+//   cursor: pointer;
+//   background-color: #fff; /* Background color */
+//   color: #1f558f; /* Text color */
+//   font-size: 16px; /* Font size */
+//   font-weight: bold; /* Font weight */
+//   transition: background-color 0.3s, color 0.3s; /* Transition effect */
+// }
+
+// /* Hover effect for the file input label */
+// .file-input-label:hover {
+//   background-color: #1f558f; /* Background color on hover */
+//   color: #fff; /* Text color on hover */
+// }
+
+// .file-input-label input[type="file"] {
+//   display: none; /* Hide the input element */
+// }
+
+
+// .update-btn {
+// 	display: block;
+// 	width: 100%;
+// 	background-color: #1f558f;
+// 	color: #FFF;
+// }
+
+// .profile-actions .close-btn {
+// 	display: block;
+// 	width: 100%;
+// 	background-color: #c3c3c3;
+// 	color: #FFF;
+// 	margin-top: 7px;
+// }
+
+// .new-image, .current-image {
+// 	width: 29%;
+// 	height: 13rem;
+// 	position: relative;
+// 	left: 13rem;
+// }

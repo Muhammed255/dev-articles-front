@@ -1,0 +1,179 @@
+<mat-card class="example-card mb-3">
+  <mat-card-header>
+    <div
+      mat-card-avatar
+      [routerLink]="['/account', article?.user?.username]"
+      [ngStyle]="{
+        'background-image':
+          'url(' +
+          (article.user?.imageUrl ? article.user?.imageUrl : defaultImage) +
+          ')',
+        'background-size': 'cover',
+        cursor: 'pointer'
+      }"
+      class="example-header-image"
+    ></div>
+    <mat-card-title class="title">
+      <a
+        style="cursor: pointer; text-decoration: none; color: #000000"
+        [routerLink]="['/account/articles', article?._id]"
+        >{{ article.title }}</a
+      ></mat-card-title
+    >
+    <mat-card-subtitle
+      [routerLink]="['/account', article?.user?.username]"
+      style="cursor: pointer"
+      >{{ article?.user?.name }}</mat-card-subtitle
+    >
+    <span class="ml-auto mr-3" *ngIf="auth_user">
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="menu"
+        aria-label="Example icon-button with a menu"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button
+          *ngIf="auth_user?._id === article?.autherId?._id"
+          mat-menu-item
+          (click)="onEditPost(article)"
+        >
+          <mat-icon color="primary">edit</mat-icon>
+          <span>EDIT</span>
+        </button>
+        <button
+          *ngIf="auth_user._id === article?.autherId?._id"
+          mat-menu-item
+          (click)="onDeleteArticle(article._id)"
+        >
+          <mat-icon color="warn">delete</mat-icon>
+          <span>DELETE</span>
+        </button>
+        <button *ngIf="showAddOrRemoveFromBookmark" mat-menu-item (click)="onAddToBookmarksClicked(article)">
+          <mat-icon
+            color="accent"
+            [ngClass]="{
+              'is-bookmarked': checkIfArticleBookmarked(article)
+            }"
+          >
+            {{ checkIfArticleBookmarked(article) ? "star" : "star_border" }}
+          </mat-icon>
+          <span>{{
+            checkIfArticleBookmarked(article)
+              ? "Remove From Bookmarks"
+              : "Add To Bookmarks"
+          }}</span>
+        </button>
+				<button
+          *ngIf="auth_user._id === article.autherId._id && showHideFromTimeLine"
+          mat-menu-item
+          (click)="onHideFromTimeline(article._id)"
+        >
+          <mat-icon color="warn">remove_red_eye</mat-icon>
+          <span>Hide From Timeline</span>
+        </button>
+      </mat-menu>
+    </span>
+  </mat-card-header>
+  <img
+    mat-card-image
+    class="img-article"
+    [src]="article.article_image"
+    [alt]="'title'"
+  />
+  <mat-card-content>
+    <p>{{ article.sub_title }}</p>
+    <!-- Add more article content here if needed -->
+  </mat-card-content>
+  <mat-card-actions class="action-buttons" *ngIf="isAuth">
+    <div class="dropdown">
+      <button
+        mat-button
+        color="primary"
+        [disabled]="disableIfLiked(article).isLiked || article.autherId?._id === this.auth_user?._id"
+        (click)="onLikeArticle(article._id)"
+      >
+        <mat-icon
+          class="mat-18 mb-3"
+          [svgIcon]="
+            disableIfLiked(article).isLiked
+              ? 'thumb_up_filled'
+              : 'thumb_up_outline'
+          "
+        ></mat-icon>
+        Likes {{ disableIfLiked(article).count }}
+      </button>
+      <div class="dropdown-content">
+        <a
+          style="width: max-content"
+          *ngFor="let liker of allLikedOrDisliked(article).likers"
+          [routerLink]="['/account', liker?.user?.username]"
+          >{{ liker?.user?.name }}</a
+        >
+      </div>
+    </div>
+    <div class="dropdown">
+      <button
+        mat-button
+        color="primary"
+        [disabled]="disableIfDisLiked(article).isdisLiked || article.autherId?._id === this.auth_user?._id"
+        (click)="onDislikeArticle(article?._id)"
+      >
+        <mat-icon
+          class="mat-18 mb-2"
+          [svgIcon]="
+            disableIfDisLiked(article).isdisLiked
+              ? 'thumb_down_filled'
+              : 'thumb_down_outline'
+          "
+        ></mat-icon>
+        DisLikes {{ disableIfDisLiked(article).count }}
+      </button>
+      <div class="dropdown-content">
+        <a
+          *ngFor="let disliker of allLikedOrDisliked(article).dislikers"
+          [routerLink]="['/account', disliker?.user?.username]"
+          >{{ disliker?.user?.name }}</a
+        >
+      </div>
+    </div>
+    <button mat-button (click)="commentsFragment(article._id)">
+      <mat-icon class="mat-18" color="primary">comment</mat-icon> Comment
+    </button>
+    <a
+      mat-button
+      class="ml-auto mr-3"
+      style="text-decoration: none"
+      (click)="openCommentsDialog(article.comments, article._id)"
+    >
+      {{ article?.comments?.length }} Comments
+    </a>
+  </mat-card-actions>
+  <div class="comments-section" *ngIf="showLatestComments">
+    <app-comment
+      [articleId]="article._id"
+			[slice_amount]="2"
+			[authUser]="auth_user"
+    ></app-comment>
+    <!-- <div class="comment" *ngFor="let comment of latestComments.slice(-2)">
+
+      <p class="commentator">{{ comment.commentator.name }}</p>
+      <img [src]="comment.commentator.imageUrl" alt="Commentator Image">
+
+
+      <p class="comment-text">{{ comment.text }}</p>
+      <p>{{ comment.createDateTime | date }}</p>
+
+
+      <div *ngIf="comment.replies && comment.replies.length > 0" class="reply-section">
+        <p class="reply">{{ comment.replies[0].text }}</p>
+        <p>Replied by: {{ comment.replies[0].replier.name }}</p>
+        <p>{{ comment.replies[0].createDateTime | date }}</p>
+      </div>
+
+
+      <mat-divider></mat-divider>
+    </div> -->
+  </div>
+</mat-card>

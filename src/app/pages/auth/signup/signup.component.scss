@@ -1,0 +1,28 @@
+input[type = "file"] {
+    visibility: hidden;
+}
+.image-preview {
+    height: 5rem;
+    margin: 1rem 0;
+}
+
+.image-preview img {
+    height: 100%;
+}
+
+mat-sidenav-container {
+    height: 100%;
+}
+
+.ddddd {
+    margin: 70px 0px 129px 0;
+}
+
+mat-form-field {
+    width: 100%;
+}
+.submitBtn {
+    left: 56px;
+    top: 17px;
+    width: 162px;
+}

@@ -1,0 +1,45 @@
+@for(reply of replies; track reply) {
+<div class="reply">
+  <div class="reply-header">
+    <div
+      class="avatar"
+      [style.background-image]="'url(' + reply?.replier?.imageUrl + ')'"
+    ></div>
+    <div class="info">
+      <div class="author">{{ reply?.replier?.name }}</div>
+      <div class="username">&#64;{{ reply?.replier?.username }}</div>
+    </div>
+    <div class="timestamp">{{ reply?.createdAt | createDate }}</div>
+  </div>
+  <div class="reply-body">{{ reply?.reply }}</div>
+  @if(isEditing && isSelectedIndex === $index) {
+  <div>
+    <input matInput [(ngModel)]="replyText" style="border: 1px solid #000" />
+    <button mat-button color="primary" (click)="updateReply(reply._id)">
+      Save
+    </button>
+    <button mat-button color="warn" (click)="cancelEdit()">Cancel</button>
+  </div>
+  } @if(authUser._id === reply.replier._id) {
+
+  <div class="actions">
+    <button
+      mat-button
+      color="primary"
+      class="action-button"
+      (click)="toggleEdit($index, reply.reply)"
+    >
+      Edit
+    </button>
+    <button
+      mat-button
+      color="warn"
+      class="action-button"
+      (click)="deleteReply(reply._id)"
+    >
+      Delete
+    </button>
+  </div>
+  }
+</div>
+}

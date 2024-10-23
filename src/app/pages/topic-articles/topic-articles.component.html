@@ -1,0 +1,28 @@
+<div class="container px-4 px-lg-5">
+  <!-- Heading Row-->
+  <div class="row gx-4 gx-lg-5 align-items-center my-5">
+      <div class="col-lg-8"><img class="img-fluid rounded mb-4 mb-lg-0" [src]="topic?.image" [alt]="topic?.name"></div>
+      <div class="col-lg-4" style="top:-140px;">
+          <h1 class="font-weight-light">{{topic?.name}}</h1>
+          <p>{{topic?.description}}</p><a class="btn btn-primary" href="#!">Vote</a>
+      </div>
+  </div><!-- Call to Action-->
+  <div class="card text-white bg-secondary my-5 py-4 text-center">
+      <div class="card-body">
+          <!-- <p class="text-white m-0">This call to action card is a great place to showcase some important information or display a clever tagline!</p> -->
+      </div>
+  </div>
+  <!-- Content Row-->
+  <div class="row gx-4 gx-lg-5">
+      <div class="col-md-4 mb-5" *ngFor="let post of articles">
+          <div class="card h-100">
+              <div class="card-body">
+                  <h2 class="card-title">{{post?.title}}</h2>
+                  <p class="card-text">{{post?.sub_title}}</p>
+              </div>
+              <div class="card-footer"><a class="btn btn-primary btn-sm" [routerLink]="['/account/articles', post?._id]">More Info</a></div>
+          </div>
+      </div>
+
+  </div>
+</div>

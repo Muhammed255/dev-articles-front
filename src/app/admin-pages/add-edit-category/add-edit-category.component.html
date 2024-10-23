@@ -1,0 +1,41 @@
+<mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form
+      (submit)="onSaveCategory(catForm)"
+      #catForm="ngForm"
+      *ngIf="!isLoading"
+  >
+      <mat-form-field>
+          <input
+              type="text"
+              matInput
+              name="name"
+              [ngModel]="category?.name"
+              #nameInput="ngModel"
+              placeholder="Enter Category Name"
+              required
+          />
+          <mat-error *ngIf="nameInput.invalid"
+              >Please enter category name</mat-error
+          >
+      </mat-form-field>
+      <mat-form-field>
+          <input
+              type="text"
+              matInput
+              name="description"
+              [ngModel]="category?.description"
+              #descInput="ngModel"
+              placeholder="Enter description"
+              required
+          />
+          <mat-error *ngIf="descInput.invalid"
+              >Please enter category description</mat-error
+          >
+      </mat-form-field>
+
+      <button mat-raised-button color="accent" *ngIf="!isLoading">
+          Save Category
+      </button>
+  </form>
+</mat-card>

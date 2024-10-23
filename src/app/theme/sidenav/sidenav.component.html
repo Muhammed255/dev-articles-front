@@ -1,0 +1,11 @@
+<div class="sidenav-menu-outer">
+    <div fxLayout="column" fxLayoutAlign="center center" class="user-block">
+        <img [src]="user?.imageUrl ? user?.imageUrl : 'assets/faces/face-0.jpg'" alt="user-image">
+        <h2 class="userName">{{user?.name}}</h2>
+        <p class="secondary-text-color">{{user?.username}}</p>
+    </div>
+    <mat-divider></mat-divider>
+    <div id="vertical-menu">
+        <app-vertical-menu [menuItems]="menuItems" [menuParentId]="0"></app-vertical-menu>
+    </div>
+</div>

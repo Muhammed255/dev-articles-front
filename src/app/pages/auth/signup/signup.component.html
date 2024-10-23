@@ -1,0 +1,138 @@
+<mat-sidenav-container class="h-100">
+  <div fxLayout="row" fxLayoutAlign="center center" class="h-100 ddddd">
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="onSubmit()"
+      fxFlex="90"
+      fxFlex.gt-sm="30"
+      fxFlex.sm="60"
+      class="mat-elevation-z6"
+    >
+      <app-content-header
+        [icon]="'person_add'"
+        [title]="'Register'"
+        [hideBreadcrumb]="true"
+        [hasBgImage]="true"
+        [class]="'py-4'"
+      ></app-content-header>
+      <div class="p-4">
+        <a mat-button routerLink="/account/login" color="accent" class="w-100"
+          >Already have an account? Sign in!</a
+        >
+        <mat-form-field class="w-100">
+          <mat-icon matPrefix class="mat-icon-sm mb-2 mr-2 secondary-text-color"
+            >person</mat-icon
+          >
+          <input matInput placeholder="Full Name" formControlName="name" />
+          <mat-error *ngIf="registerForm.controls.name.errors?.required"
+            >Full Name is required</mat-error
+          >
+          <mat-error *ngIf="registerForm.controls.name.hasError('minlength')"
+            >Full Name isn't long enough, minimum of 3 characters</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field class="w-100">
+          <mat-icon matPrefix class="mat-icon-sm mb-2 mr-2 secondary-text-color"
+            >person</mat-icon
+          >
+          <input matInput placeholder="Username" formControlName="username" />
+          <mat-error *ngIf="registerForm.controls.username.errors?.required"
+            >Username is required</mat-error
+          >
+          <mat-error *ngIf="registerForm.controls.username.hasError('minlength')"
+            >Username isn't long enough, minimum of 3 characters</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field class="w-100">
+          <mat-icon matPrefix class="mat-icon-sm mb-2 mr-2 secondary-text-color"
+            >mail</mat-icon
+          >
+          <input matInput placeholder="Email" formControlName="email" />
+          <mat-error *ngIf="registerForm.controls.email.errors?.required"
+            >Email is required</mat-error
+          >
+          <mat-error *ngIf="registerForm.controls.email.hasError('invalidEmail')"
+            >Invalid email address</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field class="w-100">
+          <mat-icon matPrefix class="mat-icon-sm mb-2 mr-2 secondary-text-color"
+            >lock</mat-icon
+          >
+          <input
+            type="password"
+            matInput
+            placeholder="Password"
+            formControlName="password"
+            type="password"
+            minlength="6"
+          />
+          <mat-error *ngIf="registerForm.controls.password.errors?.required"
+            >Password is required</mat-error
+          >
+          <mat-error *ngIf="registerForm.controls.password.hasError('minlength')"
+            >Password isn't long enough, minimum of 6 characters</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field class="w-100">
+          <mat-icon matPrefix class="mat-icon-sm mb-2 mr-2 secondary-text-color"
+            >lock</mat-icon
+          >
+          <input
+            type="password"
+            matInput
+            placeholder="Confirm Password"
+            formControlName="confirmPassword"
+          />
+          <mat-error *ngIf="registerForm.controls.confirmPassword.errors?.required"
+            >Confirm Password is required</mat-error
+          >
+          <mat-error
+            *ngIf="
+              registerForm.controls.confirmPassword.hasError('mismatchedPasswords')
+            "
+            >Passwords do not match</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field class="w-100">
+          <mat-icon matPrefix class="mat-icon-sm mb-2 mr-2 secondary-text-color"
+            >info</mat-icon
+          >
+          <input matInput placeholder="Bio" formControlName="bio" />
+          <mat-error *ngIf="registerForm.controls.bio.errors?.required"
+            >Bio is required</mat-error
+          >
+          <mat-error *ngIf="registerForm.controls.bio.hasError('minlength')"
+            >Bio too short, add more about you</mat-error
+          >
+        </mat-form-field>
+        <!-- <div class="w-100">
+          <button mat-stroked-button (click)="filePicker.click()" type="button">
+            Pick your image
+          </button>
+
+          <input type="file" #filePicker (change)="onImagePicked($event)" />
+        </div>
+        <div
+            class="image-preview form-group col-8"
+            *ngIf="
+                imagePreview !== '' &&
+                imagePreview &&
+                registerForm.get('imageUrl').valid
+            "
+        >
+            <img [src]="imagePreview" [alt]="registerForm.value.name" />
+        </div> -->
+        <button
+          mat-raised-button
+          class="submitBtn"
+          color="primary"
+          class="mat-elevation-z6 w-100 mt-3"
+          type="submit"
+        >
+          SIGN UP
+        </button>
+      </div>
+    </form>
+  </div>
+</mat-sidenav-container>

@@ -1,0 +1,100 @@
+<div fxLayout="row wrap">
+  <div
+    fxFlex="50"
+    fxFlex.xl="14.2"
+    fxFlex.lg="14.2"
+    fxFlex.md="33.3"
+    fxFlex.sm="33.3"
+    class="p-2"
+  >
+    <mat-card class="gradient-green tile p-2">
+      <mat-icon>view_list</mat-icon>
+      <h2>{{ data?.categoriesCount }}</h2>
+      <p>Categories</p>
+    </mat-card>
+  </div>
+  <div
+    fxFlex="50"
+    fxFlex.xl="14.2"
+    fxFlex.lg="14.2"
+    fxFlex.md="33.3"
+    fxFlex.sm="33.3"
+    class="p-2"
+  >
+    <mat-card class="gradient-red tile p-2">
+      <mat-icon>thumb_up_alt</mat-icon>
+      <h2>{{ data?.likesCount }}</h2>
+      <p>Likes</p>
+    </mat-card>
+  </div>
+  <div
+    fxFlex="50"
+    fxFlex.xl="14.2"
+    fxFlex.lg="14.2"
+    fxFlex.md="33.3"
+    fxFlex.sm="33.3"
+    class="p-2"
+  >
+    <mat-card class="gradient-orange tile p-2">
+      <mat-icon>thumb_down_alt</mat-icon>
+      <h2>{{ data?.dislikesCount }}</h2>
+      <p>Dislikes</p>
+    </mat-card>
+  </div>
+  <div
+    fxFlex="50"
+    fxFlex.xl="14.2"
+    fxFlex.lg="14.2"
+    fxFlex.md="33.3"
+    fxFlex.sm="33.3"
+    class="p-2"
+  >
+    <mat-card class="gradient-pink tile p-2">
+      <mat-icon>list</mat-icon>
+      <h2>{{ data?.topicsCount }}</h2>
+      <p>Topics</p>
+    </mat-card>
+  </div>
+  <div
+    fxFlex="50"
+    fxFlex.xl="14.2"
+    fxFlex.lg="14.2"
+    fxFlex.md="33.3"
+    fxFlex.sm="33.3"
+    class="p-2"
+  >
+    <mat-card class="gradient-gray tile p-2">
+      <mat-icon>local_post_office</mat-icon>
+      <h2>{{ data?.articlesCount }}</h2>
+      <p>Articles</p>
+    </mat-card>
+  </div>
+  <div
+    fxFlex="50"
+    fxFlex.xl="14.2"
+    fxFlex.lg="14.2"
+    fxFlex.md="33.3"
+    fxFlex.sm="33.3"
+    class="p-2"
+  >
+    <mat-card class="gradient-brown tile p-2">
+      <mat-icon>comment</mat-icon>
+      <h2>{{ data?.commentsCount.totalComments }}</h2>
+      <p>Comments</p>
+    </mat-card>
+  </div>
+  <div
+    fxFlex="50"
+    fxFlex.xl="14.2"
+    fxFlex.lg="14.2"
+    fxFlex.md="33.3"
+    fxFlex.sm="33.3"
+    class="p-2"
+  >
+    <mat-card class="gradient-brown tile p-2">
+      <mat-icon>reply</mat-icon>
+      <h2>{{ data?.commentsCount.totalReplies }}</h2>
+      <p>Replies</p>
+    </mat-card>
+  </div>
+</div>

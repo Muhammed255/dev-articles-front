@@ -1,0 +1,359 @@
+<div class="container" style="height: 100%">
+  <div class="row">
+    <div class="col-sm-12">
+      <mat-spinner *ngIf="isLoading"></mat-spinner>
+      <div>
+        <div class="content social-timeline">
+          <div class="">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="social-wallpaper">
+                  <div class="profile-hvr">
+                    <i class="icofont icofont-ui-edit p-r-10"></i>
+                    <i class="icofont icofont-ui-delete"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-xl-3 col-lg-4 col-md-4 col-xs-12">
+                <div class="social-timeline-left">
+                  <div class="card mb-4">
+                    <div class="social-profile">
+                      <img
+                        class="img-fluid width-100 user-imageUrl"
+                        [src]="
+                          user?.imageUrl
+                            ? user?.imageUrl
+                            : 'assets/faces/face-0.jpg'
+                        "
+                        [alt]="user?.name"
+                      />
+                      <div class="profile-hvr m-t-15">
+                        <i class="icofont icofont-ui-edit p-r-10"></i>
+                        <i class="icofont icofont-ui-delete"></i>
+                      </div>
+                    </div>
+                    <div class="card-body social-follower">
+                      <h4>{{ user?.name }}</h4>
+                      <h5>{{ user?.username }}</h5>
+                      <div class="">
+                        <button
+                          mat-button
+                          color="primary"
+                          *ngIf="
+                            auth_user?._id !== user?._id &&
+                            !isFollowingProfileUser
+                          "
+                          (click)="onFollowUser(user._id)"
+                          type="button"
+                          class="btn btn-outline-primary waves-effect btn-block"
+                        >
+                          <mat-icon>person_add</mat-icon> <span>Follow</span>
+                        </button>
+                        <button
+                          mat-button
+                          color="primary"
+                          *ngIf="
+                            auth_user?._id !== user?._id && isFollowingProfileUser
+                          "
+                          (click)="onUnfollowUser(user._id)"
+                          type="button"
+                          class="btn btn-outline-primary waves-effect btn-block"
+                        >
+                          <mat-icon>person</mat-icon> <span>Unfollow</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="card"
+                    *ngIf="
+                      user?._id == authService.getUserId() &&
+                      authService.getRole() == 'user'
+                    "
+                  >
+                    <div class="card-header">
+                      <h5 class="card-header-text">Who to follow</h5>
+                    </div>
+                    <div class="card-body user-box">
+                      <div class="media m-b-10">
+                        <a class="media-left" href="#!">
+                          <img
+                            class="media-object img-radius"
+                            src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                            alt="Generic placeholder image"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title=""
+                            data-original-title="user image"
+                          />
+                          <div class="live-status bg-danger"></div>
+                        </a>
+                        <div class="media-body">
+                          <div class="chat-header">Josephin Doe</div>
+                          <div class="text-muted social-designation">
+                            Software Engineer
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="widget">
+                    <div class="widget-content">
+                      <ul
+                        class="widget-user-list"
+                        *ngIf="
+                          user?._id == authService.getUserId() &&
+                          authService.getRole() == 'user'
+                        "
+                      >
+                        <li *ngFor="let follower of user.followers">
+                          <a [routerLink]="['/account', follower?.username]"
+                            ><img [src]="follower?.imageUrl" alt=""
+                          /></a>
+                        </li>
+                        <li class="number" *ngIf="user.followers?.length > 0">
+                          <a href="#">+26</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-9 col-lg-8 col-md-8 col-xs-12">
+                <div class="card social-tabs">
+                  <ul class="nav nav-tabs md-tabs tab-timeline" role="tablist">
+                    <li class="nav-item">
+                      <a
+                        class="nav-link active"
+                        data-toggle="tab"
+                        href="#timeline"
+                        role="tab"
+                        >Timeline</a
+                      >
+                      <div class="slide"></div>
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        data-toggle="tab"
+                        href="#about"
+                        role="tab"
+                        >About</a
+                      >
+                      <div class="slide"></div>
+                    </li>
+                    <li
+                      class="nav-item"
+                      *ngIf="auth_user?._id === user?._id"
+                    >
+                      <a
+                        class="nav-link"
+                        data-toggle="tab"
+                        href="#comments"
+                        role="tab"
+                        >Comments</a
+                      >
+                      <div class="slide"></div>
+                    </li>
+                    <li
+                      class="nav-item"
+                      *ngIf="auth_user?._id === user?._id"
+                    >
+                      <a
+                        class="nav-link"
+                        data-toggle="tab"
+                        href="#bookmarks"
+                        role="tab"
+                        >Bookmarks</a
+                      >
+                      <div class="slide"></div>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="tab-content">
+                  <div class="tab-pane active" id="timeline">
+                    <app-article-card
+                      *ngFor="let article of articles"
+                      [article]="article"
+                      [auth_user]="auth_user"
+                      [showLatestComments]="true"
+                      [latestComments]="article.comments"
+                      [showHideFromTimeLine]="true"
+                      (editArticle)="onEditPost(article)"
+                      (deleteArticle)="onDeleteArticle(article._id)"
+                      (hideArticle)="onHideArticle(article._id)"
+                    ></app-article-card>
+                  </div>
+
+                  <div class="tab-pane" id="about">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="card">
+                          <div class="card-header">
+                            <h5 class="card-header-text">Basic Information</h5>
+                          </div>
+                          <div class="card-block">
+                            <div id="view-info" class="row">
+                              <div
+                                class="col-lg-12 col-md-12"
+                                style="max-width: 100%"
+                              >
+                                <form>
+                                  <table class="table table-responsive m-b-0">
+                                    <tbody>
+                                      <tr>
+                                        <th class="social-label b-none p-t-0">
+                                          Full Name
+                                        </th>
+                                        <td
+                                          class="social-user-name b-none p-t-0 text-muted"
+                                        >
+                                          {{ user?.name }}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <th class="social-label b-none">
+                                          Joined At
+                                        </th>
+                                        <td
+                                          class="social-user-name b-none text-muted"
+                                        >
+                                          {{ user?.createDateTime | date }}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <th class="social-label b-none">
+                                          Username
+                                        </th>
+                                        <td
+                                          class="social-user-name b-none text-muted"
+                                        >
+                                          {{ user?.username }}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <th class="social-label b-none p-b-0">
+                                          Bio
+                                        </th>
+                                        <td
+                                          class="social-user-name b-none p-b-0 text-muted"
+                                        >
+                                          {{ user?.bio }}
+                                        </td>
+                                      </tr>
+                                      <ng-container
+                                        *ngIf="
+                                          auth_user?.username === user?.username
+                                        "
+                                      >
+                                        <tr>
+                                          <th class="social-label b-none p-t-0">
+                                            Mobile Number
+                                          </th>
+                                          <td
+                                            class="social-user-name b-none p-t-0 text-muted"
+                                          >
+                                            {{ user?.phone_number }}
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <th class="social-label b-none">
+                                            Email Address
+                                          </th>
+                                          <td
+                                            class="social-user-name b-none text-muted"
+                                          >
+                                            {{ user?.email }}
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <th class="social-label b-none">
+                                            Birthdate
+                                          </th>
+                                          <td
+                                            class="social-user-name b-none text-muted"
+                                          >
+                                            {{ user?.birthdate | date }}
+                                          </td>
+                                        </tr>
+                                      </ng-container>
+                                      <tr *ngIf="user?.linkedin">
+                                        <th class="social-label b-none">
+                                          LinkedIn
+                                        </th>
+                                        <td
+                                          class="social-user-name b-none text-muted"
+                                        >
+                                          {{ user?.linkedin }}
+                                        </td>
+                                      </tr>
+                                      <tr *ngIf="user?.stackoverflow">
+                                        <th class="social-label b-none p-b-0">
+                                          Stackoverflow
+                                        </th>
+                                        <td
+                                          class="social-user-name b-none p-b-0 text-muted"
+                                        >
+                                          {{ user?.stackoverflow }}
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    *ngIf="auth_user?.username === user?.username"
+                    class="tab-pane"
+                    id="comments"
+                  >
+                    <div class="card">
+                      <div class="card-block">
+                        <app-comment
+													[authUser]="auth_user"
+													[slice_amount]="0"
+                        ></app-comment>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="tab-pane"
+                    id="bookmarks"
+                    *ngIf="auth_user?.username === user?.username"
+                  >
+                    <div class="row">
+                      <div class="col-lg-12 col-xl-6">
+                        <app-article
+                          *ngFor="let bookmark of getBookmarks()"
+                          [article]="bookmark.article"
+                          [showRemoveOption]="true"
+                          (removeFromBookmarksClicked)="
+                            removeFromBookmarks(bookmark.article)
+                          "
+                        ></app-article>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

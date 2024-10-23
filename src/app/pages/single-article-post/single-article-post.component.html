@@ -1,0 +1,377 @@
+<!-- <mat-grid-list cols="4" rowHeight="100px">
+  <mat-grid-tile colspan="3" rowspan="3">
+    <mat-chip-list aria-label="Article Topic">
+      <mat-chip color="primary" selected>{{article?.topicId.name}}</mat-chip>
+    </mat-chip-list>
+    <h1 style="margin-top:4px">{{ article?.title }}</h1>
+    <p>
+      By
+        <a href="#">{{ article?.autherId.name }}</a>
+    </p><span> - On {{article?.createdAt | date}}</span>
+  </mat-grid-tile>
+</mat-grid-list> -->
+
+<div class="container">
+  <div class="row">
+    <div
+      class="col-xl-8 col-lg-8 col-md-12 col-sm-12 mb-2"
+      style="margin-bottom: 50px"
+    >
+      <!-- Title -->
+      <h1 class="mt-4">{{ article?.title }}</h1>
+      <!-- Author -->
+      <p class="lead">
+        by
+        <a [routerLink]="['/account', article?.user?.username]">{{
+          article?.user?.name
+        }}</a>
+        <span class="mt-1 float-right" style="font-size: 16px"
+          >Posted on {{ article?.createdAt | createDate }}</span
+        >
+      </p>
+      <hr />
+      <img
+        class="img-fluid rounded"
+        [src]="article?.article_image"
+        style="width: 900px; height: 300px"
+        [alt]="article?.title"
+      />
+      <hr />
+
+      <!-- Post Content -->
+      <p class="lead">
+        {{ article?.sub_title }}
+      </p>
+      <hr />
+
+      <div [innerHtml]="article?.content"></div>
+      <div #commentsSection id="commentsSection" class="comments-section">
+        <ul class="list-group">
+          @if(auth_user) {
+          <li class="list-group-item">
+            <button
+              type="button"
+              name="button"
+              class="btn btn-sm btn-danger"
+              (click)="draftComment(article?._id)"
+              [disabled]="newComment.indexOf(article?._id) > -1"
+            >
+              Post Comment
+            </button>
+            <br />
+            <br />
+            @if(newComment.indexOf(article?._id) > -1) {
+            <div>
+              <form [formGroup]="commentForm">
+                <textarea
+                  id="comment_form"
+                  rows="10"
+                  cols="30"
+                  class="form-control"
+                  formControlName="comment"
+                ></textarea>
+                <div
+                  [ngClass]="{
+                    'has-success':
+                      !commentForm.controls.comment.errors &&
+                      commentForm.controls.comment.dirty,
+                    'has-error':
+                      commentForm.controls.comment.dirty &&
+                      commentForm.controls.comment.errors
+                  }"
+                >
+                  <ul class="help-block">
+                    @if(commentForm.controls.comment.errors?.required &&
+                    commentForm.controls.comment.dirty) {
+                    <li>This field is required.</li>
+                    } @if((commentForm.controls.comment.errors?.maxlength &&
+                    commentForm.controls.comment.dirty) ||
+                    (commentForm.controls.comment.errors?.minlength &&
+                    commentForm.controls.comment.dirty)) {
+
+                    <li>
+                      Comment must be at least 1 character but no more than 200.
+                    </li>
+                    }
+                  </ul>
+                </div>
+                <button
+                  [disabled]="!commentForm.valid"
+                  type="submit"
+                  name="button"
+                  class="btn btn-sm btn-info"
+                  (click)="postComment(article?._id)"
+                >
+                  Post
+                </button>
+                <button
+                  type="button"
+                  name="button"
+                  class="btn btn-sm btn-danger"
+                  (click)="cancelSubmission(article?._id)"
+                >
+                  Cancel
+                </button>
+              </form>
+            </div>
+            }
+          </li>
+          } @if(enabledComments.indexOf(article?._id) === -1 &&
+          article?.comments.length > 0) {
+          <li class="list-group-item">
+            <span (click)="expand(article?._id)" class="show_comments">
+              Show comments&nbsp;&nbsp;
+              <mat-icon class="cmt-icon">comment</mat-icon>
+            </span>
+          </li>
+          } @if(enabledComments.indexOf(article?._id) > -1) {
+
+          <li class="list-group-item" style="margin-bottom: 28px">
+            <span (click)="collapse(article?._id)">
+              Hide Comments&nbsp;&nbsp;
+              <mat-icon style="position: relative; top: 8px">comment</mat-icon>
+            </span>
+          </li>
+          } @if(enabledComments.indexOf(article?._id) > -1) {
+
+          <div>
+            <app-comment
+              [articleId]="article._id"
+              [authUser]="auth_user"
+              [slice_amount]="0"
+            ></app-comment>
+            <!-- <li
+		*ngFor="let comment of article?.comments; let i = index"
+		class="list-group-item"
+		style="bottom: 30px"
+	>
+		<div class="row" id="comments_link">
+			<div class="col-sm-2">
+				<div class="thumbnail">
+					<img
+						class="img-circle user-photo"
+						style="width: 50px;height:50px; border-radius: 50%;"
+						[src]="comment?.commentator.imageUrl ? comment?.commentator.imageUrl : 'assets/faces/face-0.jpg'"
+						[alt]="comment?.commentator.username"
+					/>
+				</div>
+			</div>
+
+			<div class="col-sm-10">
+				<div
+					class="panel panel-default"
+					style="position: relative; right: 25px"
+				>
+					<div class="panel-heading">
+						<strong>{{ comment?.commentator.name }}</strong>
+						<small>{{ comment?.commentator.username }}</small>
+						<span
+							class="text-muted"
+							style="position: relative; left: 5rem"
+							>{{ comment?.createDateTime | date }}</span
+						>
+					</div>
+					<div class="panel-body" style="color: #000">
+						{{ comment.comment }}
+					</div>
+					<button
+						mat-mini-fab
+						*ngIf="auth_user"
+						class="float-right"
+						(click)="toggle(this, i)"
+					>
+						<mat-icon>reply</mat-icon>
+					</button>
+					<ul class="media-list" style="padding: 11px 0px 0 0;">
+						<li class="media" *ngFor="let reply of comment?.replies">
+							<a
+								[routerLink]="['/account', reply?.replier.username]"
+								class="pull-left"
+							>
+								<img
+									style="width: 50px; height: 50px; border-radius: 50%"
+									[src]="
+										reply?.replier.imageUrl
+											? reply?.replier.imageUrl
+											: 'assets/faces/face-0.jpg'
+									"
+									[alt]="reply?.replier.name"
+									class="img-circle"
+								/>
+							</a>
+							<div class="media-body">
+								<strong
+									[routerLink]="[
+										'/account/profile',
+										reply?.replier._id
+									]"
+									class="username"
+									>{{ reply?.replier.name }}</strong
+								>
+								<small
+									[routerLink]="[
+										'/account/profile',
+										reply?.replier._id
+									]"
+									class="text-success"
+									>{{ reply?.replier.username }}</small
+								>
+								<span class="text-muted float-right">
+									<small class="text-muted">{{
+										reply?.createDateTime | date
+									}}</small>
+								</span>
+								<p style="color: #000; position: relative; left: 8px">
+									{{ reply?.reply }}
+								</p>
+							</div>
+						</li>
+					</ul>
+					<div *ngIf="auth_user">
+						<div
+							class="comment-box add-comment reply-box"
+							*ngIf="selectedIndex == i"
+						>
+							<span class="commenter-pic float-left">
+								<img
+									[src]="
+										auth_user?.imageUrl
+											? auth_user?.imageUrl
+											: 'assets/faces/face-0.jpg'
+									"
+									class="img-fluid"
+									style="height: 50px; width: 50px; border-radius: 50%"
+								/>
+							</span>
+							<span class="reply-form">
+								<form [formGroup]="commentReplyForm">
+									<mat-form-field style="width: 16rem;">
+										<input
+										matInput
+										type="text"
+										placeholder="Add a public reply"
+										formControlName="reply"
+									/>
+									</mat-form-field>
+									<input
+										type="hidden"
+										formControlName="commentId"
+										[ngModel]="comment._id"
+									/>
+									<button
+										type="submit"
+										mat-button
+										(click)="postReplyComment(article._id)"
+									>
+										Reply
+									</button>
+									<button
+										type="cancel"
+										class="reply-popup"
+										mat-button
+										(click)="toggle(this, i)"
+									>
+										Cancel
+									</button>
+								</form>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</li> -->
+          </div>
+          }
+        </ul>
+      </div>
+      @if(!auth_user) {
+      <div class="unauth">Sign In to Comment in this Article</div>
+      }
+    </div>
+
+    <!-- Sidebar Widgets Column -->
+    <div class="col-xl-4 col-lg-4 col-md-8 col-sm-8 mb-2">
+      <p>Likes : {{ countLikes }}</p>
+      <p>Dislikes : {{ countdisLikes }}</p>
+      <p>comments : {{ article?.comments.length }}</p>
+
+      <div class="card mb-4">
+        <div class="card-header">Search</div>
+        <div class="card-body">
+          <search-form></search-form>
+          <!-- <form [formGroup]="searchForm" (ngSubmit)="onSubmitSearchForm()">
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="searchString"
+                placeholder="Enter search term..."
+                aria-describedby="button-search"
+              />
+
+              <button id="button-search" class="btn btn-primary" type="button">
+                Go!
+              </button>
+            </div>
+          </form> -->
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header">Topic</div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <ul class="list-unstyled mb-0">
+                <li>
+                  <a
+                    [routerLink]="[
+                      '/account/topic-articles',
+                      article?.topicId?._id
+                    ]"
+                    >{{ article?.topic?.name }}</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header">Other Topics</div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <ul class="list-unstyled mb-0">
+                @for(topic of topics; track topic) {
+									<li>
+										<a [routerLink]="['/account/topic-articles', topic?._id]">{{
+											topic?.name
+										}}</a>
+									</li>
+								}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <button
+                    [disabled]="comment?.likedBy.indexOf(auth_user._id) > -1"
+                    class="comment-like"
+                    (click)="onLikeComment(article._id, comment._id)"
+                  >
+                    <mat-icon>thumb_up</mat-icon>
+                    {{ comment?.likes }}
+                  </button>
+                  <button
+                    [disabled]="comment?.dislikedBy.indexOf(auth_user._id) > -1"
+                    class="comment-dislike"
+                    (click)="ondislikeComment(article._id, comment._id)"
+                  >
+                    <mat-icon>thumb_down</mat-icon>
+                    {{ comment?.dislikes }}
+                  </button> -->

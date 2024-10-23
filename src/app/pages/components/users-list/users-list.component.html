@@ -1,0 +1,36 @@
+<h1 mat-dialog-title style="text-align: center; font-size: 40px">users list</h1>
+
+<div mat-dialog-content>
+  <mat-tab-group>
+    <mat-tab label="Like">
+      <mat-list *ngIf="likers.length > 0">
+        <mat-list-item *ngFor="let liker of likers">
+          <img
+            matListAvatar
+            [src]="liker?.user?.imageUrl ? liker.user?.imageUrl : 'assets/faces/face-0.jpg'"
+            [alt]="liker?.user.name"
+          />
+          <h3 matLine>{{ liker?.user.name }}</h3>
+          <p matLine>{{ liker?.user.username }}</p>
+        </mat-list-item>
+      </mat-list>
+    </mat-tab>
+    <mat-tab label="Dislike">
+      <mat-list *ngIf="dislikers.length > 0">
+        <mat-list-item *ngFor="let disliker of dislikers">
+          <img
+            matListAvatar
+            [src]="disliker?.user?.imageUrl ? disliker?.user?.imageUrl : 'assets/faces/face-0.jpg'"
+            [alt]="disliker?.user.name"
+          />
+          <h3 matLine>{{ disliker?.user.name }}</h3>
+          <p matLine>{{ disliker?.user.username }}</p>
+        </mat-list-item>
+      </mat-list>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<div mat-dialog-actions class="users-actions">
+  <button mat-button (click)="onNoClick()">Close</button>
+</div>

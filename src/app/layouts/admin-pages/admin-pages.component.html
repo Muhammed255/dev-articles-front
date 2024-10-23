@@ -1,0 +1,70 @@
+<div id="main" perfectScrollbar class="h-100">
+<header class="header">
+  <mat-toolbar class="top-toolbar" color="primary">
+      <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex>
+          <div fxLayout="row" fxLayoutAlign="center center">
+              <a routerLink="/admin/dashboard" fxLayout="row" fxLayoutAlign="start center" class="logo" ngClass.xs="mobile">
+                  <img src="assets/dev-articles-logo.jpg" style="width: 20px" alt="logo">
+                  <span class="mx-2">Developers Articles</span>
+              </a>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="start center" class="w-100">
+            <button *ngIf="menu == 'vertical'" mat-icon-button (click)="sidenav.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <button mat-mini-fab (click)="addPostDialog()"><mat-icon>edit</mat-icon></button>
+        </div>
+          <div fxLayout="row" fxLayoutAlign="end center">
+              <button mat-icon-button [matMenuTriggerFor]="userMenu" #userMenuTrigger="matMenuTrigger" >
+                <mat-icon>account_circle</mat-icon>
+            </button>
+
+            <mat-menu #userMenu="matMenu" [overlapTrigger]="false" class="toolbar-dropdown-menu user-menu">
+                <!--<span (mouseleave)="userMenuTrigger.closeMenu()">-->
+                    <mat-card fxLayout="row" fxLayoutAlign="space-around center" class="user-info p-0">
+                        <img [src]="auth_user?.imageUrl ? auth_user?.imageUrl : 'assets/faces/face-0.jpg'" class="auth-img" alt="user-image">
+                        <div fxLayout="column" fxLayoutAlign="center center">
+                            <h2 class="authUser">{{auth_user?.name}}</h2>
+                            <h3 class="secondary-text-color userName">&#64;{{auth_user?.username}}</h3>
+                            <p class="secondary-text-color">Member since {{auth_user?.createDateTime | date}}</p>
+                        </div>
+                    </mat-card>
+                    <mat-divider></mat-divider>
+                    <a mat-menu-item *ngIf="auth_user" [routerLink]="['/admin', auth_user?.username]">
+                        <mat-icon>person</mat-icon>
+                        <span>Profile</span>
+                    </a>
+                    <a mat-menu-item *ngIf="auth_user" (click)="openSettings(auth_user)">
+                        <mat-icon>settings</mat-icon>
+                        <span>Settings</span>
+                    </a>
+                    <mat-divider></mat-divider>
+                    <a mat-menu-item (click)="authService.logout()">
+                        <mat-icon>power_settings_new</mat-icon>
+                        <span>Log out</span>
+                    </a>
+                <!--</span>-->
+            </mat-menu>
+          </div>
+      </div>
+  </mat-toolbar>
+</header>
+
+<mat-drawer-container class="page-wrapper">
+
+  <mat-drawer #sidenav opened="true" mode="side" class="sidenav mat-elevation-z6" autoFocus="false">
+      <mat-toolbar class="top-toolbar" color="primary">
+          <a routerLink="/admin/dashboard" fxLayout="row" fxLayoutAlign="start center" class="logo">
+              <img src="assets/dev-articles-logo.jpg" style="width: 20px" alt="logo">
+              <span class="mx-2">Developers Articles</span>
+          </a>
+      </mat-toolbar>
+      <app-sidenav [user]="auth_user"></app-sidenav>
+  </mat-drawer>
+
+  <mat-drawer-content style="overflow: auto;">
+      <router-outlet></router-outlet>
+  </mat-drawer-content>
+
+</mat-drawer-container>
+</div>

@@ -1,0 +1,67 @@
+<div class="container">
+  <form
+    [formGroup]="searchForm"
+    (ngSubmit)="onSubmitSearchForm()"
+    class="search-form"
+  >
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 mb-2">
+        <mat-form-field class="example-full-width mb-3" appearance="outline">
+          <input
+            matInput
+            formControlName="searchString"
+            placeholder="Enter search term..."
+          />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 mb-2">
+        <mat-form-field class="example-full-width mb-3" appearance="outline">
+          <input
+            matInput
+            [matDatepicker]="picker1"
+            formControlName="postDateFrom"
+            placeholder="From Date"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker1"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 mb-2">
+        <mat-form-field appearance="outline" class="example-full-width mb-3">
+          <input
+            matInput
+            [matDatepicker]="picker2"
+            formControlName="postDateTo"
+            placeholder="To Date"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker2"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 mb-2">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="search-button"
+        >
+          Search
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

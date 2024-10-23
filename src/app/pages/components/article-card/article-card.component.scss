@@ -1,0 +1,163 @@
+.container-fluid {
+  padding: 0 15px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+	transition: background-color 0.3s;
+	margin: -20px 0 -5px 8px;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+	animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; /* Start with opacity 0 */
+  }
+  to {
+    opacity: 1; /* Fade in to full opacity */
+  }
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Adjust button styles */
+.action-buttons .dropdown,
+.action-buttons button,
+.action-buttons a {
+  margin-bottom: 10px;
+  width: calc(50% - 203px); /* Adjust width as needed */
+}
+
+/* Add styles for the comments section */
+.comments-section {
+  margin-top: 20px;
+}
+
+/* Style for each individual comment */
+.comment {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Style for commentator information */
+.comment .commentator {
+  font-weight: bold;
+}
+
+/* Style for comment text */
+.comment .comment-text {
+  margin-top: 5px;
+}
+
+/* Style for reply section */
+.reply-section {
+  margin-top: 10px;
+}
+
+/* Style for individual reply */
+.reply {
+  margin-top: 5px;
+  padding-left: 20px;
+  border-left: 2px solid #ccc;
+}
+
+
+/* Adjust column width based on screen size */
+@media (min-width: 992px) {
+  .action-buttons {
+    flex-wrap: nowrap; /* Prevent wrapping on larger screens */
+  }
+
+  .action-buttons .dropdown,
+  .action-buttons button,
+  .action-buttons a {
+    width: auto; /* Reset width to auto for larger screens */
+    margin-bottom: 0; /* Reset margin bottom */
+  }
+
+  .action-buttons .dropdown {
+    margin-right: 4rem; /* Add margin between dropdown and other buttons */
+  }
+}
+
+@media (max-width: 992px) {
+
+  .action-buttons .dropdown,
+  .action-buttons button,
+  .action-buttons a {
+    // width: 100%; /* Set width to 100% for smaller screens */
+    margin-bottom: 10px; /* Add margin bottom for spacing */
+    text-align: center; /* Center align text */
+  }
+
+  .action-buttons .dropdown {
+    margin-right: 0; /* Remove margin right */
+  }
+
+  .action-buttons button,
+  .action-buttons a {
+    padding: 10px 0; /* Add padding to buttons for better tap targets */
+  }
+
+  .action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px; /* Add margin bottom for spacing between pairs */
+  }
+
+  .action-buttons .dropdown,
+  .action-buttons button,
+  .action-buttons a {
+    width: calc(50% - 16px); /* Set width for each button in a pair */
+  }
+}
+
+
+/* Add media query for screens smaller than 992px */
+@media (max-width: 768px) {
+
+	.action-buttons {
+		flex-direction: column;
+	}
+
+  .action-buttons .dropdown,
+  .action-buttons button,
+  .action-buttons a {
+    width: 100%; /* Set width to 100% for smaller screens */
+    margin-bottom: 10px; /* Add margin bottom for stacking */
+  }
+}

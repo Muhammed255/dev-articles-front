@@ -1,0 +1,20 @@
+// :host {
+//   position: fixed;
+//   top: 150px;
+//   left: 40%;
+//   width: 20%;
+//   background: white;
+//   padding: 0.5rem;
+//   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+// }
+::ng-deep {
+	.mat-dialog-actions {
+		margin: 33px 96px 0 5rem;
+	}
+}
+
+.ok-btn {
+	font-size: 20px;
+	background-color: #a1afff;
+	color: #FFF;
+}

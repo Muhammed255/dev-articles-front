@@ -1,0 +1,202 @@
+<h1 mat-dialog-title style="text-align: center; font-size: 40px">
+  {{ headerTitle }}
+</h1>
+<div class="container">
+  <div mat-dialog-content>
+    <form
+      [formGroup]="form"
+      class="form-container"
+      enctype="multipart/form-data"
+    >
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 mb-2">
+          <mat-form-field class="example-full-width mb-3" color="accent" appearance="fill">
+            <mat-label>Article Title</mat-label>
+            <input matInput formControlName="title" type="text" required />
+            @if(form.controls.title.invalid && form.controls.title.touched) {
+            <mat-error> Article Title is Required </mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 mb-2">
+          <mat-form-field class="example-full-width mb-3" color="accent" appearance="fill">
+            <mat-label>Article Sub Title</mat-label>
+            <input matInput formControlName="sub_title" type="text" required />
+            @if(form.controls.sub_title.invalid &&
+            form.controls.sub_title.touched) {
+            <mat-error> Article Sub Title is Required </mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 mb-2">
+          <angular-editor
+            [placeholder]="'Enter content here...'"
+            formControlName="content"
+            required
+          ></angular-editor>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 mb-2">
+          <mat-form-field class="example-full-width mb-3" color="accent" appearance="fill">
+            <mat-label>Select Topic</mat-label>
+            <mat-select placeholder="Select Topic" formControlName="topicId">
+              @for(topic of topics; track topic) {
+              <mat-option [value]="topic._id">
+                {{ topic.name }}
+              </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 mb-2">
+          <div class="form-group col-8 example-full-width mb-3">
+            <button
+              mat-stroked-button
+              (click)="filePicker.click()"
+              type="button"
+            >
+              Pick Article Image
+            </button>
+            <input type="file" #filePicker (change)="onImagePicked($event)" />
+          </div>
+        </div>
+      </div>
+
+      @if(imagePreview !== '' && imagePreview &&
+      form.get('article_image').valid) {
+      <div class="image-preview form-group col-8">
+        <img [src]="imagePreview" [alt]="form.value.title" />
+      </div>
+      } @if(article && !imagePreview) {
+      <div class="image-preview form-group col-8">
+        <img [src]="article.article_image" [alt]="article.title" />
+      </div>
+      }
+    </form>
+  </div>
+
+  <div mat-dialog-actions>
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+        @if(!isUpdate) {
+
+        <button
+          mat-button
+          (click)="addNewArticle()"
+          cdkFocusInitial
+          class="save-btn"
+          color="primary"
+        >
+          SAVE
+        </button>
+        } @else {
+        <button
+          mat-button
+          [mat-dialog-close]="form.value"
+          cdkFocusInitial
+          class="save-btn"
+          color="primary"
+        >
+          UPDATE
+        </button>
+        }
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+        <button mat-button (click)="onNoClick()" class="cancel-btn">
+          CANCEL
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <h1 mat-dialog-title style="text-align: center; font-size: 40px">
+  {{ headerTitle }}
+</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="form" class="form-container" enctype="multipart/form-data">
+    <mat-form-field color="accent">
+      <input
+        matInput
+        formControlName="title"
+        type="text"
+        required
+        placeholder="Article Title"
+      />
+    </mat-form-field>
+    <mat-error
+      *ngIf="form.controls.title.invalid && form.controls.title.touched"
+      >Article Title is Required</mat-error
+    >
+    <mat-form-field color="accent">
+      <input
+        matInput
+        formControlName="sub_title"
+        type="text"
+        required
+        placeholder="Article Sub Title"
+      />
+    </mat-form-field>
+    <mat-error
+      *ngIf="form.controls.sub_title.invalid && form.controls.sub_title.touched"
+      >Article Sub Title is Required</mat-error
+    >
+    <angular-editor
+      [placeholder]="'Enter content here...'"
+      [(ngModel)]="htmlContent"
+      formControlName="content"
+      required
+    ></angular-editor>
+    <br />
+    <div class="form-group col-8">
+      <button mat-stroked-button (click)="filePicker.click()" type="button">
+        Pick Article Image
+      </button>
+
+      <input type="file" #filePicker (change)="onImagePicked($event)" />
+    </div>
+    <div
+      class="image-preview form-group col-8"
+      *ngIf="
+        imagePreview !== '' && imagePreview && form.get('article_image').valid
+      "
+    >
+      <img [src]="imagePreview" [alt]="form.value.title" />
+    </div>
+    <div
+      class="image-preview form-group col-8"
+      *ngIf="
+        article && !imagePreview
+      "
+    >
+      <img [src]="article.article_image" [alt]="article.title" />
+    </div>
+    <br />
+    <mat-select placeholder="Select Topic" formControlName="topicId">
+      <mat-option *ngFor="let topic of topics" [value]="topic._id">
+        {{topic.name}}
+      </mat-option>
+    </mat-select>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button
+    mat-button
+    (click)="addNewArticle()"
+    cdkFocusInitial
+    color="primary"
+  >
+    Save
+  </button>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+</div> -->

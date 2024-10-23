@@ -1,0 +1,80 @@
+.mat-dialog-container {
+  width: 100%;
+  max-width: 600px; /* Adjust the max width as needed */
+}
+
+.mat-form-field {
+  width: 100%;
+  margin-bottom: 15px;
+	margin-top: 11px;
+}
+
+.image-preview {
+  height: 100px; /* Adjust the height as needed */
+  margin: 10px 0;
+}
+
+.image-preview img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.form-container {
+  padding: 20px;
+}
+
+
+.mat-dialog-actions {
+  padding-top: 20px; /* Add some top padding for separation */
+}
+
+.mat-dialog-actions button {
+  display: block;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #ffffff; /* White text color */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+	width: 100%;
+}
+
+.mat-dialog-actions .save-btn {
+	background-color: #2196f3; /* Blue color for primary action */
+	margin: 10px auto; /* Center the buttons horizontally */
+}
+
+.mat-dialog-actions .cancel-btn {
+	background-color: #797979;
+}
+
+.mat-dialog-actions button:hover {
+  background-color: #0e7ae6; /* Darker shade of blue on hover */
+}
+
+// ::ng-deep {
+//   .cdk-overlay-pane {
+//     margin-left: auto;
+//     margin: auto;
+//   }
+// }
+
+// mat-form-field {
+//   width: 85%;
+// }
+
+input[type="file"] {
+  visibility: hidden;
+}
+
+// .image-preview {
+//   height: 5rem;
+//   margin: 1rem 0;
+// }
+
+// .image-preview img {
+//   height: 100%;
+// }

@@ -1,0 +1,101 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4" *ngFor="let article of articles">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <div
+            mat-card-avatar
+            [routerLink]="['/account', article?.user?.username]"
+            [ngStyle]="{
+              'background-image':
+                'url(' +
+                (article.user?.imageUrl
+                  ? article.user?.imageUrl
+                  : defaultImage) +
+                ')',
+              'background-size': 'cover',
+              cursor: 'pointer'
+            }"
+            class="example-header-image"
+          ></div>
+          <mat-card-title>{{ article.title }}</mat-card-title>
+          <mat-card-subtitle
+            >Added By: {{ article.autherId?.name }}</mat-card-subtitle
+          >
+        </mat-card-header>
+        <img
+          mat-card-image
+          [src]="article.article_image"
+          [alt]="article.title"
+        />
+        <mat-card-content>
+          <p>
+            {{ article.sub_title }}
+          </p>
+          <br />
+          <p class="forwardBtn">
+            <button
+              mat-mini-fab
+              aria-label="Example icon-button with a forward icon"
+              [routerLink]="['/admin/post', article._id]"
+            >
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </p>
+          <!-- Show the button here -->
+          <!-- <button mat-flat-button color="primary" (click)="someFunction()">Common Button</button> -->
+        </mat-card-content>
+        <mat-card-actions>
+          <button
+            mat-flat-button
+            class="editBtn"
+            color="primary"
+            (click)="editPostDialog(article)"
+          >
+            EDIT
+          </button>
+          <button
+            mat-flat-button
+            color="accent"
+            (click)="onDeleteArticle(article._id)"
+          >
+            DELETE
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="container">
+  <div class="row">
+    <div class="col-lg-4" *ngFor="let article of articles">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>{{article.title}}</mat-card-title>
+          <mat-card-subtitle>Added By: {{article.autherId?.name}}</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image [src]="article.article_image" [alt]="article.title">
+        <mat-card-content>
+          <p>
+            {{article.sub_title}}
+          </p>
+          <br>
+          <p>
+            <button mat-mini-fab aria-label="Example icon-button with a forward icon" [routerLink]="['/admin/post', article._id]">
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-flat-button color="primary"(click)="editPostDialog(article._id)">EDIT</button>
+          <button mat-flat-button color="accent" (click)="onDeleteArticle(article._id)">DELETE</button>
+          <button mat-button>LIKES: {{article.likes}}</button>
+          <button mat-button>DISLIKES: {{article.dislikes}}</button>
+          <button mat-button>COMMENTS: {{article.comments.length}}</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div> -->

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" [attr.width]="width" [attr.height]="height" viewBox="0 0 200 200">
+	<defs>
+		<linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+			<stop offset="0%" [attr.style]="'stop-color:' + primaryColor + ';stop-opacity:1'" />
+			<stop offset="100%" [attr.style]="'stop-color:' + secondaryColor + ';stop-opacity:1'" />
+		</linearGradient>
+	</defs>
+
+	<!-- Code Bracket -->
+	<path d="M60,40 L30,100 L60,160" stroke="url(#grad)" stroke-width="12" fill="none" stroke-linecap="round"/>
+	<path d="M140,40 L170,100 L140,160" stroke="url(#grad)" stroke-width="12" fill="none" stroke-linecap="round"/>
+
+	<!-- Pen/Quill -->
+	<path d="M100,70 L130,100 L100,180" stroke="url(#grad)" stroke-width="8" fill="none" stroke-linecap="round"/>
+	<circle cx="100" cy="65" r="8" fill="url(#grad)"/>
+</svg>

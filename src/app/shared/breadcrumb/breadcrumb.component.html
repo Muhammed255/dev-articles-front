@@ -1,0 +1,12 @@
+<div fxLayout="row" class="breadcrumb p-2">
+    <a routerLink="/" class="breadcrumb-item" fxLayout="row" fxLayoutAlign="start center">
+        <mat-icon>home</mat-icon>
+        <span class="breadcrumb-title">Home</span>
+    </a>
+		@for(breadcrumb of breadcrumbs; track breadcrumb) {
+			<div class="breadcrumb-item" fxLayout="row" fxLayoutAlign="start center">
+					<a [hidden]="$index == (breadcrumbs.length - 1)" [routerLink]="[breadcrumb.url]">{{breadcrumb.name}}</a>
+					<span [hidden]="$index != (breadcrumbs.length - 1)" class="breadcrumb-title active">{{breadcrumb.name}}</span>
+			</div>
+		}
+</div>

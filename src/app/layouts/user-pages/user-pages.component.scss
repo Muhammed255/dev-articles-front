@@ -1,0 +1,59 @@
+app-logo {
+  margin-right: 15px;
+}
+
+.menu-spacer {
+  flex: 1 1 auto;
+}
+
+::ng-deep {
+  .mat-drawer-container {
+    height: auto;
+  }
+}
+
+.authUser, .userName {
+	margin: 0 0 0 0;
+}
+
+a {
+	text-decoration: none;
+}
+
+.homeLink:hover, .catlink:hover, .loginLink:hover, .signupLink:hover {
+	background-color: transparent;
+	color: #FFF;
+}
+
+mat-sidenav-content {
+  overflow-y: hidden;
+}
+
+.user-info {
+  height: 100px;
+  width: 250px;
+  box-shadow: none !important;
+}
+
+.user-image {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+h2 {
+  font-size: 16px;
+  font-weight: 400;
+}
+h3 {
+  font-size: 14px;
+  font-weight: 400;
+}
+p {
+  font-size: 12px;
+}
+.mat-menu-item {
+  font-size: 14px;
+  height: 36px;
+  line-height: 36px;
+}

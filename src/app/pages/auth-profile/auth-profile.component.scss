@@ -1,0 +1,346 @@
+/* General styles */
+.mat-spinner {
+  margin: auto;
+}
+
+// .timeline-btn {
+//   display: none; /* Initially hide the buttons */
+// }
+
+
+.custom-card {
+	margin-bottom: 20px;
+	border: 1px solid #e7eaec;
+	border-radius: 4px;
+	background-color: #fff;
+}
+
+.custom-card-header {
+	padding: 15px;
+	background-color: #f7f7f7;
+	border-bottom: 1px solid #e7eaec;
+}
+
+.custom-card-header h5 {
+	margin-bottom: 0;
+	font-size: 18px;
+	color: #333;
+}
+
+.custom-card-body {
+	padding: 20px;
+}
+
+.user-avatar {
+	width: 100px;
+	height: auto;
+	border-radius: 50%;
+	margin: 0 auto;
+	display: block;
+}
+
+
+.follower-item {
+	display: flex;
+	align-items: center;
+	margin-bottom: 15px;
+}
+
+.follower-avatar {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	margin-right: 15px;
+}
+
+.follower-details h6 {
+	margin: 0;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.follower-details p {
+	margin: 0;
+	color: #888;
+}
+
+
+
+.widget {
+	background: #fff;
+	margin-bottom: .75rem;
+	display: block;
+	position: relative;
+	margin-top:40px;
+}
+.widget-user-list > li {
+	display: inline-block;
+}
+.widget-user-list {
+	padding: 0;
+	list-style-type: none;
+}
+.widget-user-list {
+	margin: 0;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.widget-user-list > li + li {
+	margin-left: -1.125rem;
+}
+.widget-user-list > li a {
+	display: block;
+	border: 0.125rem solid #fff;
+	overflow: hidden;
+	width: 2.25rem;
+	height: 2.25rem;
+	margin-bottom: -0.3125rem;
+	line-height: 2rem;
+	text-align: center;
+	text-decoration: none;
+	-webkit-border-radius: 2.25rem;
+	-moz-border-radius: 2.25rem;
+	border-radius: 2.25rem;
+}
+.widget-user-list > li a img {
+	display: block;
+	max-width: 100%;
+}
+.widget-user-list > li.number a {
+	background: #c7c7cc;
+	color: #fff;
+}
+.widget-content, .widget-footer {
+	padding: .625rem;
+	background: #fff;
+	position: relative;
+}
+
+
+
+
+/* Social wallpaper */
+.social-wallpaper {
+  position: relative;
+  height: 300px;
+  background: url(https://bootdey.com/img/Content/bg1.jpg) no-repeat;
+  background-size: cover;
+  background-color: #00b5ec;
+}
+
+/* Social tabs */
+.card.social-tabs {
+  border-top: none;
+	margin-bottom: 10px;
+}
+
+/* Title and username */
+.articleTitle,
+.userName {
+  cursor: pointer;
+}
+
+/* No posts message */
+.no-posts {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 500;
+  margin-top: 7px;
+}
+
+
+
+/* User image */
+.user-imageUrl {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  border-radius: 50%;
+	margin-left: 3.2rem;
+}
+
+
+
+
+/* Style for follower counter */
+.follower-counter {
+	margin-top: 15px;
+}
+
+.follower-counter .btn {
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+/* Style for "Add as Friend" button */
+.btn-outline-primary {
+	width: 100%;
+}
+
+/* Style for "Who to follow" card */
+.user-box {
+	padding: 20px;
+}
+
+.media-object {
+	width: 64px;
+	height: 64px;
+	border-radius: 50%;
+}
+
+.live-status {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+}
+
+/* Style for "Followers" card */
+.friend-box {
+	padding: 20px;
+}
+
+.friend-box .media-object {
+	width: 100px;
+	height: 100px;
+}
+
+
+
+
+
+
+/* Media object in friend box */
+.friend-box img {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+/* Dropdown menu */
+.profile-hvr i {
+	margin: 0 5px;
+  cursor: pointer;
+}
+
+/* Social profile and wallpaper hover effect */
+.social-profile:hover .profile-hvr,
+.social-wallpaper:hover .profile-hvr {
+  opacity: 1;
+  transition: all ease-in-out 0.3s;
+}
+
+/* Profile hover effect */
+.profile-hvr {
+  opacity: 0;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  font-size: 20px;
+  padding: 10px;
+  top: 0;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.61);
+  transition: all ease-in-out 0.3s;
+}
+
+/* Social profile */
+.social-profile {
+  margin: 0 15px;
+}
+
+/* Social follower */
+.social-follower {
+  text-align: center;
+}
+
+.social-follower h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.social-follower h5 {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.social-follower .follower-counter {
+  text-align: center;
+  margin: 25px 0;
+  font-size: 13px;
+}
+
+.social-follower .follower-counter .txt-primary {
+  font-size: 24px;
+}
+
+/* Tabs */
+.md-tabs .nav-item {
+  width: calc(100% / 4);
+  text-align: center;
+}
+
+.md-tabs .nav-item .nav-link.acadve ~ .slide {
+  opacity: 1;
+  transition: all 0.3s ease-out;
+}
+
+.md-tabs .nav-item .nav-link ~ .slide {
+  opacity: 0;
+  transition: all 0.3s ease-out;
+}
+
+/* Slide */
+.md-tabs .nav-item .slide {
+  background: #4099ff;
+  width: calc(100% / 4);
+  height: 4px;
+  position: absolute;
+  transition: left 0.3s ease-out;
+  bottom: 0;
+}
+
+/* Media Queries */
+@media only screen and (max-width: 768px) {
+  /* Adjustments for smaller screens */
+  .social-wallpaper {
+    height: 200px;
+  }
+
+  .user-imageUrl {
+
+    max-width: 100px;
+  }
+
+  .social-profile,
+  .social-follower {
+    margin: 0;
+  }
+
+  .social-follower .follower-counter {
+    margin: 15px 0;
+  }
+
+  .md-tabs .nav-item {
+    width: calc(100% / 2);
+  }
+
+	.user-imageUrl {
+    width: 80px;
+    height: 80px;
+  }
+
+  .social-profile h4 {
+    font-size: 16px;
+  }
+
+  .social-profile h5 {
+    font-size: 14px;
+  }
+
+  .social-tabs a {
+    font-size: 16px;
+    padding: 15px 0 5px;
+  }
+}

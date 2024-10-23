@@ -1,0 +1,46 @@
+/* reply.component.css */
+.reply {
+	padding: 11px 0px 3px 0px;
+	border-radius: 10px;
+}
+
+.reply-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-size: cover;
+  margin-right: 10px;
+}
+
+.info {
+  flex-grow: 1;
+}
+
+.author {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.username {
+  color: #888;
+}
+
+.timestamp {
+  color: #888;
+}
+
+.reply-body {
+  margin-left: 35px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}

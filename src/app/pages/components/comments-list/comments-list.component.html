@@ -1,0 +1,86 @@
+<app-comment [articleId]="articleId" [authUser]="auth_user" [slice_amount]="0"></app-comment>
+
+<!-- <div class="container bootdey" style="margin-left: -29px">
+  <div class="col-md-12 bootstrap snippets">
+    <div class="panel" *ngFor="let comment of comments">
+      <div class="panel-body">
+        <div class="media-block">
+          <a class="media-left"
+            ><img
+              class="img-circle img-sm"
+              [alt]="comment.commentator.name"
+              [src]="comment.commentator.imageUrl"
+          /></a>
+          <div class="media-body">
+            <div class="mar-btm">
+              <a class="btn-link text-semibold media-heading box-inline">{{
+                comment.commentator.name
+              }}</a>
+              <p class="text-muted text-sm">
+                {{ comment.createDateTime | createDate }}
+              </p>
+            </div>
+            <p style="margin: -21px 0 9px 16px">
+              {{ comment.comment }}
+            </p>
+            <hr />
+            <div>
+              <div class="media-block" *ngFor="let reply of comment.replies">
+                <a class="media-left"
+                  ><img
+                    class="img-circle img-sm"
+                    [alt]="reply.replier.name"
+                    [src]="reply.replier.imageUrl"
+                /></a>
+                <div class="media-body">
+                  <div class="mar-btm">
+                    <a
+                      class="btn-link text-semibold media-heading box-inline"
+                      >{{ reply.replier.name }}</a
+                    >
+                    <p class="text-muted text-sm">
+                      {{ reply.createDateTime | createDate }}
+                    </p>
+                  </div>
+                  <p style="margin: -21px 0 9px 16px">
+                    {{ reply.reply }}
+                  </p>
+                  <hr />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- <div class="comments-container">
+  <div class="comment" *ngFor="let comment of comments">
+    <div class="comment-header">
+      <div class="commentator">
+        <img [src]="comment.commentator.imageUrl" class="commentator-image" alt="Commentator Image">
+        <div class="commentator-details">
+          <div class="commentator-name">{{ comment.commentator.name }}</div>
+          <div class="comment-time">{{ comment.createDateTime | date }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-text">{{ comment.comment }}</div>
+    <div class="replies-container">
+      <div class="reply" *ngFor="let reply of comment.replies">
+        <div class="reply-header">
+          <div class="replier">
+            <img [src]="reply.replier.imageUrl" class="replier-image" alt="Replier Image">
+            <div class="replier-details">
+              <div class="replier-name">{{ reply.replier.name }}</div>
+              <div class="reply-time">{{ reply.createDateTime | date }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="reply-text">{{ reply.reply }}</div>
+      </div>
+    </div>
+  </div>
+</div> -->

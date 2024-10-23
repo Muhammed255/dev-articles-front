@@ -1,0 +1,116 @@
+@if(isLoading) {
+<mat-spinner style="margin: auto"></mat-spinner>
+} @for(comment of comments; track comment) {
+
+<mat-card class="comment">
+  <div
+    class="comment-header"
+    [routerLink]="['/account/articles', comment?.article?._id]"
+  >
+    <div
+      class="avatar"
+      [style.background-image]="'url(' + comment?.commentator?.imageUrl + ')'"
+    ></div>
+    <div class="info">
+      <div class="author">{{ comment?.commentator?.name }}</div>
+      <div class="username">&#64;{{ comment?.commentator?.username }}</div>
+    </div>
+    <div class="timestamp">{{ comment?.createdAt | createDate }}</div>
+  </div>
+  @if(!isEditing || isSelectedIndex !== $index) {
+  <div class="comment-body">
+    {{ comment?.comment }}
+  </div>
+  } @if(isEditing && isSelectedIndex === $index) {
+  <div>
+		<mat-form-field  class="example-full-width mb-3" appearance="outline">
+			<input matInput [(ngModel)]="commentText" />
+		</mat-form-field>
+    <button mat-button color="primary" (click)="updateComment(comment._id)">
+      Save
+    </button>
+    <button mat-button color="warn" (click)="cancelEdit()">Cancel</button>
+  </div>
+  } @if(authUser) {
+
+  <div class="actions">
+    <button
+      mat-raised-button
+      class="action-button"
+      (click)="toggle(this, $index)"
+    >
+      Reply
+    </button>
+    @if(authUser._id === comment.commentator._id) {
+    <ng-container>
+      <button
+        mat-button
+        color="primary"
+        class="action-button"
+        (click)="toggleEdit($index, comment.comment)"
+      >
+        Edit
+      </button>
+      <button
+        mat-button
+        color="warn"
+        class="action-button"
+        (click)="deleteComment(comment._id)"
+      >
+        Delete
+      </button>
+    </ng-container>
+    }
+  </div>
+  <div>
+    @if(selectedReplyIndex == $index && isAddingReply) {
+    <div class="comment-box add-comment reply-box">
+      <span class="commenter-pic float-left">
+        <img
+          [src]="
+            authUser?.imageUrl ? authUser?.imageUrl : 'assets/faces/face-0.jpg'
+          "
+          class="img-fluid"
+          style="height: 50px; width: 50px; border-radius: 50%"
+        />
+      </span>
+      <span class="reply-form">
+        <form [formGroup]="commentReplyForm">
+          <mat-form-field style="width: 16rem">
+            <input
+              matInput
+              type="text"
+              placeholder="Add a public reply"
+              formControlName="reply"
+            />
+          </mat-form-field>
+          <input
+            type="hidden"
+            formControlName="commentId"
+            [ngModel]="comment._id"
+          />
+          <button type="submit" mat-button (click)="postReplyComment()">
+            Reply
+          </button>
+          <button
+            type="button"
+            class="reply-popup"
+            mat-button
+            (click)="toggle(this, $index)"
+          >
+            Cancel
+          </button>
+        </form>
+      </span>
+    </div>
+    }
+    <div class="replies">
+      <app-reply
+        [authUser]="authUser"
+        [replies]="sliceReplies(comment)"
+      ></app-reply>
+    </div>
+  </div>
+  }
+</mat-card>
+}

@@ -1,0 +1,30 @@
+<!-- bookmarked-article.component.html -->
+<mat-card class="bookmarked-article">
+  <div class="header">
+    <div class="title">{{ article.title }}</div>
+    <div class="subtitle">{{ article.subtitle }}</div>
+    <div class="topic">{{ article.topic }}</div>
+    <ng-container *ngIf="showRemoveOption">
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="onRemoveFromBookmarksClicked()">Remove from Bookmarks</button>
+      </mat-menu>
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </ng-container>
+  </div>
+  <div class="content">
+    <div [innerHTML]="truncateContent(article.content)"></div>
+    <button *ngIf="isContentTruncated(article.content)" mat-button color="primary" (click)="expandContent(article._id)">Read more</button>
+  </div>
+  <div class="footer">
+    <div class="user-info">
+      <div class="avatar" [style.background-image]="'url(' + article.user.imageUrl + ')'"></div>
+      <div class="user-details">
+        <div class="name">{{ article.user.name }}</div>
+        <div class="username">&#64;{{ article.user.username }}</div>
+      </div>
+    </div>
+    <img class="article-image" [src]="article.article_image" alt="Article Image" />
+  </div>
+</mat-card>

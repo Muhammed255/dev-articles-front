@@ -35,12 +35,12 @@
           <button
             mat-menu-item
             #topicsTriggerMenu
-            [matMenuTriggerFor]="topicsMenu"
+            [matMenuTriggerFor]="cat?.topics && cat?.topics.length >0 && topicsMenu"
           >
             <span>{{ cat.name }}</span>
             <mat-menu #topicsMenu="matMenu">
-              <span *ngIf="cat.TopicsCategories">
-                <ng-container *ngFor="let topic of cat.TopicsCategories">
+              <span *ngIf="cat?.topics && cat?.topics.length >0">
+                <ng-container *ngFor="let topic of cat.topics">
                   <a
                     [routerLink]="['/account/topic-articles', topic._id]"
                     mat-menu-item
@@ -67,14 +67,14 @@
       <div fxShow="true" fxHide.lt-md>
         <!-- The following menu items will be hidden on both SM and XS screen sizes -->
         <a
-          *ngIf="!authService.getIsAuth()"
+          *ngIf="!isAuth"
           routerLink="/account/login"
 					class="loginLink"
           mat-button
           >Login</a
         >
         <a
-          *ngIf="!authService.getIsAuth()"
+          *ngIf="!isAuth"
           routerLink="/account/signup"
           mat-button
 					class="signupLink"
@@ -102,6 +102,7 @@
             <img
               [src]="auth_user?.imageUrl ?? userImage"
               alt="user-image"
+							style="width: 55px;"
             />
             <div fxLayout="column" fxLayoutAlign="center center">
               <h2 class="authUser">{{ auth_user?.name }}</h2>
@@ -109,7 +110,7 @@
                 &#64;{{ auth_user?.username }}
               </h3>
               <p class="secondary-text-color">
-                Member since {{ auth_user?.createDateTime | date }}
+                Member since {{ auth_user?.createdAt | date }}
               </p>
             </div>
           </mat-card>

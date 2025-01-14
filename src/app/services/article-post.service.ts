@@ -402,6 +402,12 @@ export class ArticlePostService {
     });
   }
 
+	getAllArticlesByForAuth(where: object) {
+    return this.http.post<{ articles: any[] }>(BACKEND_URL + 'articles-by-auth-user', {
+      where,
+    });
+  }
+
   makePostHidden(id: string) {
     return this.http
       .put<{ success: boolean; msg: string }>(

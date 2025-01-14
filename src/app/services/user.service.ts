@@ -10,24 +10,24 @@ export class UserService {
 	constructor(private http: HttpClient) {}
 
   updateProfile(
-    fullName: string,
+    data: {fullName: string,
     gender: string,
     birthdate: Date,
     address: string,
     phone_number: string,
     linkedInUrl: string,
-    stackoverflowUrl: string
+    stackoverflowUrl: string}
   ) {
     return this.http.put<{ success: boolean; msg: string; updatedUser: any }>(
       BACKEND_URL + 'update-profile',
       {
-        fullName,
-        gender,
-        birthdate,
-        address,
-        phone_number,
-        linkedInUrl,
-        stackoverflowUrl,
+        fullName: data.fullName,
+        gender: data.gender,
+        birthdate: data.birthdate,
+        address: data.address,
+        phone_number: data.phone_number,
+        linkedInUrl: data.linkedInUrl,
+        stackoverflowUrl: data.stackoverflowUrl,
       }
     );
   }

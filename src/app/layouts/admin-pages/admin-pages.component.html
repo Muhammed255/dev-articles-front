@@ -4,7 +4,7 @@
       <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex>
           <div fxLayout="row" fxLayoutAlign="center center">
               <a routerLink="/admin/dashboard" fxLayout="row" fxLayoutAlign="start center" class="logo" ngClass.xs="mobile">
-                  <img src="assets/dev-articles-logo.jpg" style="width: 20px" alt="logo">
+                  <img src="assets/logo/dev-articles-logo.png" style="width: 20px" alt="logo">
                   <span class="mx-2">Developers Articles</span>
               </a>
           </div>
@@ -30,11 +30,11 @@
                         </div>
                     </mat-card>
                     <mat-divider></mat-divider>
-                    <a mat-menu-item *ngIf="auth_user" [routerLink]="['/admin', auth_user?.username]">
+                    <a mat-menu-item *ngIf="isAuthenticated" [routerLink]="['/admin', auth_user?.username]">
                         <mat-icon>person</mat-icon>
                         <span>Profile</span>
                     </a>
-                    <a mat-menu-item *ngIf="auth_user" (click)="openSettings(auth_user)">
+                    <a mat-menu-item *ngIf="isAuthenticated" (click)="openSettings(auth_user)">
                         <mat-icon>settings</mat-icon>
                         <span>Settings</span>
                     </a>
@@ -55,7 +55,7 @@
   <mat-drawer #sidenav opened="true" mode="side" class="sidenav mat-elevation-z6" autoFocus="false">
       <mat-toolbar class="top-toolbar" color="primary">
           <a routerLink="/admin/dashboard" fxLayout="row" fxLayoutAlign="start center" class="logo">
-              <img src="assets/dev-articles-logo.jpg" style="width: 20px" alt="logo">
+              <img src="assets/logo/dev-articles-logo.png" style="width: 20px" alt="logo">
               <span class="mx-2">Developers Articles</span>
           </a>
       </mat-toolbar>

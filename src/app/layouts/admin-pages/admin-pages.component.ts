@@ -13,9 +13,11 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class AdminPagesComponent implements OnInit, OnDestroy {
   auth_user: any;
+	isAuthenticated = false;
   menu = 'vertical';
   user: any | null = null;
   private userSubscription: Subscription;
+	private authSubscription: Subscription;
 
   toggleSearchBar = false;
 
@@ -27,8 +29,15 @@ export class AdminPagesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+		this.authSubscription = this.authService.isAuthenticated$.subscribe({
+			next: (isAuth) => {
+				if(isAuth) {
+					this.isAuthenticated = isAuth;
+				}
+			}
+		})
 		if(localStorage.getItem('userId')) {
-			this.authService.findUserById(localStorage.getItem('userId'))
+			// this.authService.findUserById(localStorage.getItem('userId'))
 			this.userSubscription = this.authService.user$.subscribe((user) => {
 				this.auth_user = user;
 				// this.authService.getUserSubject().next(data.user);
@@ -58,6 +67,9 @@ export class AdminPagesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     console.log('AdminPagesComponent destroyed');
-    this.userSubscription.unsubscribe();
+    this.userSubscription?.unsubscribe();
+		if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
   }
 }

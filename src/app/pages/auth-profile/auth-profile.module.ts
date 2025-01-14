@@ -7,6 +7,7 @@ import { ArticleModule } from '../components/article/article.module';
 import { AuthProfileComponent } from './auth-profile.component';
 import { CommentComponent } from '../components/comment/comment.component';
 import { ContentHeaderComponent } from 'src/app/shared/content-header/content-header.component';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 
 const routes: Routes = [
 	{path: "", component: AuthProfileComponent, pathMatch: 'full'}
@@ -20,7 +21,8 @@ const routes: Routes = [
 		ContentHeaderComponent,
 		CommentComponent,
 		ArticleModule,
-		ArticleCardModule
+		ArticleCardModule,
+		PipesModule
   ],
   declarations: [AuthProfileComponent],
   exports: [AuthProfileComponent],

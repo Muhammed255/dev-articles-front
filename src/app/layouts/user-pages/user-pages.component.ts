@@ -40,17 +40,10 @@ export class UserPagesComponent implements OnInit, OnDestroy {
       // this.authService.getUserSubject().next(data.user);
 			this.cd.detectChanges();
     });
-		this.authSubscription = this.authService.getAuthStatusListener().subscribe(isAuth => {
-			console.log('====================================');
-			console.log("user pages",isAuth);
-			console.log('====================================');
+		this.authSubscription = this.authService.isAuthenticated$.subscribe(isAuth => {
 			this.isAuth = isAuth;
 			this.cd.detectChanges();
 		})
-  }
-
-
-  ngAfterViewInit() {
   }
 
   getAllCategories() {
@@ -59,9 +52,7 @@ export class UserPagesComponent implements OnInit, OnDestroy {
 				this.categories = data.topicsByCat;
 			},
 			error: (err) => {
-				console.log('====================================');
 				console.log(err);
-				console.log('====================================');
 			}
 		});
   }

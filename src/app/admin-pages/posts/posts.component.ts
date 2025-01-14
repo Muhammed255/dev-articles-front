@@ -29,7 +29,7 @@ export class PostsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (localStorage.getItem('userId')) {
-      this.authService.findUserById(localStorage.getItem('userId'));
+      // this.authService.findUserById(localStorage.getItem('userId'));
       this.userSubscription = this.authService.user$.subscribe((user) => {
         this.auth_user = user;
 				this.cd.detectChanges()

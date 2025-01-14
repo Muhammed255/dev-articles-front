@@ -1,10 +1,10 @@
 import {
-	ChangeDetectorRef,
-	Component,
-	ElementRef,
-	OnDestroy,
-	OnInit,
-	ViewChild,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -102,24 +102,31 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   updateProfile(): void {
     this.isLoading = true;
+
+		const { fullName, gender, birthdate, address, phone_number, linkedInUrl, stackoverflowUrl } = this.profileFormGroup.value;
+
+  // Create an object with only the updated values
+  const updatedProfile = {
+    fullName,
+    gender,
+    birthdate,
+    address,
+    phone_number,
+    linkedInUrl,
+    stackoverflowUrl
+  };
+
     this.userService
       .updateProfile(
-        this.profileFormGroup.value.fullName,
-        this.profileFormGroup.value.gender,
-        this.profileFormGroup.value.birthdate,
-        this.profileFormGroup.value.address,
-        this.profileFormGroup.value.phone_number,
-        this.profileFormGroup.value.linkedInUrl,
-        this.profileFormGroup.value.stackoverflowUrl
+        updatedProfile
       )
-      .subscribe(
-        (result) => {
-          this.user = result.updatedUser;
-          this.authService.getUserSubject().next(result.updatedUser);
+      .subscribe({
+        next: (result) => {
+          this.authService.getUserState(result.updatedUser);
           this.snackBar.open(result.msg, 'Success', { duration: 3000 });
           this.isLoading = false;
         },
-        (error) => {
+        error: (error) => {
           console.error('Failed to update profile:', error);
           this.snackBar.open(
             'Failed to update profile. Please try again.',
@@ -127,8 +134,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
             { duration: 3000 }
           );
           this.isLoading = false;
-        }
-      );
+        },
+      });
   }
 
   updatePassword(): void {
@@ -138,12 +145,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
         this.passwordFormGroup.value.oldPassword,
         this.passwordFormGroup.value.newPassword
       )
-      .subscribe(
-        (passRes) => {
+      .subscribe({
+        next: (passRes) => {
           this.snackBar.open(passRes.msg, 'Success', { duration: 3000 });
           this.isLoading = false;
         },
-        (error) => {
+        error: (error) => {
           console.error('Failed to update password:', error);
           this.snackBar.open(
             'Failed to update password. Please try again.',
@@ -151,8 +158,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
             { duration: 3000 }
           );
           this.isLoading = false;
-        }
-      );
+        },
+      });
   }
 
   updateImage(): void {
@@ -167,19 +174,18 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
     this.userService
       .updateImage(this.imageFormGroup.value.imageUrl, this.user.name)
-      .subscribe(
-        (response) => {
+      .subscribe({
+        next: (response) => {
           this.isLoading = true;
           this.newImage = response.user.imageUrl;
-          this.user = response.user;
-          this.authService.getUserSubject().next(response.user);
+          this.authService.getUserSubject().next({...this.user, imageUrl: response.user.imageUrl, cloudinary_id: response.user.cloudinary_id});
           this.snackBar.open('Image updated successfully.', 'Close', {
             duration: 3000,
           });
           this.dismissImage();
           this.isLoading = false;
         },
-        (error) => {
+        error: (error) => {
           console.error('Failed to update user image:', error);
           this.snackBar.open(
             'Failed to update image. Please try again.',
@@ -187,8 +193,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
             { duration: 3000 }
           );
           this.isLoading = false;
-        }
-      );
+        },
+      });
   }
 
   dismissImage() {
@@ -219,6 +225,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
+    this.userSubscription?.unsubscribe();
   }
 }

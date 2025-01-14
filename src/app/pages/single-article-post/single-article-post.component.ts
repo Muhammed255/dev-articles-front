@@ -27,6 +27,7 @@ export class SingleArticlePostComponent
   article: any;
   @ViewChild('commentsSection') commentsSection: ElementRef;
   topics: any[] = [];
+	isAuthenticated = false;
 
   show_reply_box: boolean = false;
   auth_user: any;
@@ -40,6 +41,7 @@ export class SingleArticlePostComponent
   countLikes = 0;
   countdisLikes = 0;
 
+  private authSubscription: Subscription;
   private userSubscription: Subscription;
 
   constructor(
@@ -55,6 +57,13 @@ export class SingleArticlePostComponent
   ) {}
 
   ngOnInit() {
+		this.authSubscription = this.authService.isAuthenticated$.subscribe({
+			next: (isAuth) => {
+				if(isAuth) {
+					this.isAuthenticated = isAuth;
+				}
+			}
+		})
     this.findArticle();
     this.createCommentForm();
     this.createCommentReplyForm();
@@ -63,8 +72,10 @@ export class SingleArticlePostComponent
   }
 
   ngAfterViewInit(): void {
+    // Scroll to the comments section when the component has finished initializing
     if (this.route.snapshot.fragment === 'commentsSection') {
       setTimeout(() => {
+        // Use setTimeout to ensure the element is fully rendered
         this.commentsSection.nativeElement.scrollIntoView({
           behavior: 'smooth',
         });
@@ -95,7 +106,7 @@ export class SingleArticlePostComponent
 
   getAuthUser() {
     if (localStorage.getItem('userId')) {
-      this.authService.findUserById(localStorage.getItem('userId'));
+      // this.authService.findUserById(localStorage.getItem('userId'));
       this.userSubscription = this.authService.user$.subscribe((user) => {
         this.auth_user = user;
         this.cd.detectChanges();
@@ -106,12 +117,12 @@ export class SingleArticlePostComponent
 
   countArticleLikes(articleId) {
     this.articleService
-      .getAllArticlesBy({ postId: articleId, type: 'like' })
+      .getAllArticlesBy({ article: articleId, type: 'like' })
       .subscribe((res) => {
         this.countLikes = res.articles.length;
       });
     this.articleService
-      .getAllArticlesBy({ postId: articleId, type: 'dislike' })
+      .getAllArticlesBy({ article: articleId, type: 'dislike' })
       .subscribe((res) => {
         this.countdisLikes = res.articles.length;
       });
@@ -235,6 +246,9 @@ export class SingleArticlePostComponent
   ngOnDestroy(): void {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
+    }
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
     }
   }
 }

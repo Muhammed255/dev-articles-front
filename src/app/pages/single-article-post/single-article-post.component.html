@@ -47,7 +47,7 @@
       <div [innerHtml]="article?.content"></div>
       <div #commentsSection id="commentsSection" class="comments-section">
         <ul class="list-group">
-          @if(auth_user) {
+          @if(isAuthenticated) {
           <li class="list-group-item">
             <button
               type="button"
@@ -117,7 +117,7 @@
             }
           </li>
           } @if(enabledComments.indexOf(article?._id) === -1 &&
-          article?.comments.length > 0) {
+          article?.comments && article?.comments?.length > 0) {
           <li class="list-group-item">
             <span (click)="expand(article?._id)" class="show_comments">
               Show comments&nbsp;&nbsp;
@@ -285,7 +285,7 @@
           }
         </ul>
       </div>
-      @if(!auth_user) {
+      @if(!isAuthenticated) {
       <div class="unauth">Sign In to Comment in this Article</div>
       }
     </div>
@@ -294,7 +294,7 @@
     <div class="col-xl-4 col-lg-4 col-md-8 col-sm-8 mb-2">
       <p>Likes : {{ countLikes }}</p>
       <p>Dislikes : {{ countdisLikes }}</p>
-      <p>comments : {{ article?.comments.length }}</p>
+      <p>comments : {{ article?.comments && article?.comments?.length }}</p>
 
       <div class="card mb-4">
         <div class="card-header">Search</div>

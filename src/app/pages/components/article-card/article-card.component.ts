@@ -70,12 +70,9 @@ export class ArticleCardComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		this.authSubscription = this.authService.getAuthStatusListener().subscribe(isAuth => {
+		this.authSubscription = this.authService.isAuthenticated$.subscribe(isAuth => {
 			this.isAuth = isAuth;
 			this.cd.detectChanges()
-			console.log('====================================');
-			console.log(isAuth);
-			console.log('====================================');
 		})
 	}
 
@@ -159,9 +156,6 @@ export class ArticleCardComponent implements OnInit, OnDestroy {
   }
 
 	openCommentsDialog(comments: any[], articleId) {
-		console.log('====================================');
-		console.log("opendialog",this.article);
-		console.log('====================================');
 
     const dialogRef = this.dialog.open(CommentsListComponent, {
       width: '36rem',
@@ -169,9 +163,7 @@ export class ArticleCardComponent implements OnInit, OnDestroy {
       data: { comments, auth_user: this.auth_user, articleId },
     });
     dialogRef.afterClosed().subscribe((_) => {
-      console.log('====================================');
       console.log('CLOSED');
-      console.log('====================================');
     });
   }
 

@@ -1,10 +1,10 @@
 import {
-	AfterViewInit,
-	ChangeDetectorRef,
-	Component,
-	OnDestroy,
-	OnInit,
-	ViewChild,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -19,6 +19,7 @@ import { ArticlePostService } from 'src/app/services/article-post.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { SearchService } from 'src/app/services/search.service';
 import { CommentsListComponent } from '../components/comments-list/comments-list.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-posts',
@@ -29,7 +30,7 @@ export class PostsComponent implements OnInit, AfterViewInit, OnDestroy {
   articles: any[];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   auth_user: any;
-	isLoading = false
+  isLoading = false;
 
   articles_count = 0;
   pageSize = 5;
@@ -87,7 +88,7 @@ export class PostsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-		this.isLoading = true;
+    this.isLoading = true;
     this.route.queryParamMap.subscribe((params) => {
       if (params.has('search')) {
         const searchString = params.get('search');
@@ -109,7 +110,7 @@ export class PostsComponent implements OnInit, AfterViewInit, OnDestroy {
           (res) => {
             this.articles = res.articles;
             this.articles_count = res.maxArticles;
-						this.isLoading = false;
+            this.isLoading = false;
           }
         );
         // this.searchArticles(
@@ -125,18 +126,18 @@ export class PostsComponent implements OnInit, AfterViewInit, OnDestroy {
           (res) => {
             this.articles = res.articles;
             this.articles_count = res.maxArticles;
-						this.isLoading = false;
+            this.isLoading = false;
           }
         );
       }
     });
     if (localStorage.getItem('userId')) {
-      this.authService.findUserById(localStorage.getItem('userId'));
+      // this.authService.findUserById(localStorage.getItem('userId'));
       this.userSubscription = this.authService.user$.subscribe((user) => {
         this.auth_user = user;
-				this.isLoading = false;
+        this.isLoading = false;
         this.cd.detectChanges();
-        console.log('Change detection triggered!');
+        console.log('Change detection triggered!', user);
       });
     }
     // this.getArticles(this.pageIndex * this.pageSize, this.pageSize);
@@ -172,7 +173,7 @@ export class PostsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getArticles(skip?: number, take?: number) {
-		this.isLoading = true;
+    this.isLoading = true;
     this.articleService.getArticles(skip, take).subscribe((data) => {
       if (data.success) {
         this.articles = data.articles;
@@ -181,13 +182,13 @@ export class PostsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.articleService
           .getPostSubListener()
           .next({ articles: data.articles, maxArticles: data.maxArticles });
-				this.isLoading = false;
+        this.isLoading = false;
       }
     });
   }
 
   searchArticles(search, skip, take, postDateFrom?, postDateTo?) {
-		this.isLoading = true;
+    this.isLoading = true;
     this.articleService
       .article_search(search, skip, take, postDateFrom, postDateTo)
       .subscribe((res) => {
@@ -197,7 +198,7 @@ export class PostsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.articleService
           .getPostSubListener()
           .next({ articles: res.articles, maxArticles: res.totalCount });
-				this.isLoading = false;
+        this.isLoading = false;
       });
   }
 
@@ -210,8 +211,8 @@ export class PostsComponent implements OnInit, AfterViewInit, OnDestroy {
   checkUserWithType(articleId, type) {
     let isExist = false;
     this.articleService
-      .getAllArticlesBy({
-        postId: articleId,
+      .getAllArticlesByForAuth({
+        article: articleId,
         type: type,
         userId: this.auth_user._id,
       })
@@ -228,7 +229,7 @@ export class PostsComponent implements OnInit, AfterViewInit, OnDestroy {
   countArticleLikes(articleId, type) {
     let count = 0;
     this.articleService
-      .getAllArticlesBy({ postId: articleId, type: type })
+      .getAllArticlesBy({ article: articleId, type: type })
       .subscribe((res) => {
         count = res.articles.length;
       });
@@ -238,7 +239,7 @@ export class PostsComponent implements OnInit, AfterViewInit, OnDestroy {
   getAllBy(articleId, type) {
     let articles = [];
     this.articleService
-      .getAllArticlesBy({ postId: articleId, type: type })
+      .getAllArticlesBy({ article: articleId, type: type })
       .subscribe((res) => {
         articles = res.articles;
       });
@@ -271,26 +272,28 @@ export class PostsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onLikeArticle(id) {
-    this.articleService.likeArticle(id).subscribe((data) => {
-      if (data.success) {
-        this.getArticles(this.pageIndex * this.pageSize, this.pageSize);
-      }
-    });
-  }
-
-  onDisLikeArticle(id) {
-    this.articleService.dislikeArticle(id).subscribe(
-      (data) => {
+    this.articleService.likeArticle(id).subscribe({
+      next: (data) => {
         if (data.success) {
           this.getArticles(this.pageIndex * this.pageSize, this.pageSize);
         }
       },
-      (error) => {
-        this.snackBar.open(error.error.msg, 'Error', {
+    });
+  }
+
+  onDisLikeArticle(id) {
+    this.articleService.dislikeArticle(id).subscribe({
+      next: (data) => {
+        if (data.success) {
+          this.getArticles(this.pageIndex * this.pageSize, this.pageSize);
+        }
+      },
+      error: (error) => {
+        this.snackBar.open(error, 'Error', {
           duration: 3000,
         });
-      }
-    );
+      },
+    });
   }
 
   onAddToBookmarksClicked(art) {
@@ -357,12 +360,12 @@ export class PostsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   updatePaginator(length) {
-		this.isLoading = true;
+    this.isLoading = true;
     if (this.paginator) {
       this.paginator.length = length;
       this.paginator.pageIndex = this.pageIndex;
       this.paginator.pageSize = this.pageSize;
-			this.isLoading = false;
+      this.isLoading = false;
       this.cd.detectChanges();
     }
   }
@@ -374,9 +377,7 @@ export class PostsComponent implements OnInit, AfterViewInit, OnDestroy {
       data: { comments },
     });
     dialogRef.afterClosed().subscribe((_) => {
-      console.log('====================================');
       console.log('CLOSED');
-      console.log('====================================');
     });
   }
 
@@ -391,7 +392,7 @@ export class PostsComponent implements OnInit, AfterViewInit, OnDestroy {
       .afterClosed()
       .pipe(filter((res) => typeof res === 'object'))
       .subscribe((result) => {
-				this.isLoading = true;
+        this.isLoading = true;
         this.articleService.updateArticle(
           post._id,
           result?.title,
@@ -400,14 +401,14 @@ export class PostsComponent implements OnInit, AfterViewInit, OnDestroy {
           result?.article_image,
           result?.articleId
         );
-				this.isLoading = false;
+        this.isLoading = false;
       });
   }
 
   onDeleteArticle(id: number) {
-		this.isLoading = true;
+    this.isLoading = true;
     this.articleService.deleteArticle(id);
-		this.isLoading = false;
+    this.isLoading = false;
   }
 
   ngOnDestroy(): void {

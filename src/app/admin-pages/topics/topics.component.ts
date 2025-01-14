@@ -25,7 +25,7 @@ export class TopicsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getTopics(this.pageIndex * this.pageSize, this.pageSize);
-    this.authSubscription = this.authService.getAuthStatusListener().subscribe(isAuth => {
+    this.authSubscription = this.authService.isAuthenticated$.subscribe(isAuth => {
 			this.userIsAuthenticated = isAuth;
 		});
   }

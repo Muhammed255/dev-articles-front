@@ -65,10 +65,23 @@ export class CommentReplyService {
       });
   }
 
-  getArticleLatestComments(articleId: number, limit?: number) {
+  getArticleLatestComments(articleId: string, limit?: number) {
     return this.http
       .post<{ success: boolean; msg: string; comments: any[] }>(
         BACKEND_URL + 'latest-comments/' + articleId,
+        { limit: limit }
+      )
+      .subscribe((response) => {
+        if (response.success) {
+          this.commentsSubject.next(response.comments);
+        }
+      });
+  }
+
+	getUserLatestComments(limit?: number) {
+    return this.http
+      .post<{ success: boolean; msg: string; comments: any[] }>(
+        BACKEND_URL + 'user-latest-comments',
         { limit: limit }
       )
       .subscribe((response) => {
@@ -87,9 +100,7 @@ export class CommentReplyService {
       .post<{ reply: any }>(BACKEND_URL + 'do-reply', commentReplyData)
       .pipe(
         tap((res) => {
-          console.log('====================================');
           console.log('RES', res);
-          console.log('====================================');
           const updatedComments = this.commentsSubject.value.map((comment) => {
             if (comment._id === commentId) {
               const updatedReplies = [

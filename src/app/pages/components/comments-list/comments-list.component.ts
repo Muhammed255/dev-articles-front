@@ -15,7 +15,7 @@ export class CommentsListComponent implements OnInit {
 
 	// comments: any[] = [];
 	auth_user: any;
-	articleId: number;
+	articleId: string;
 
   constructor(
 		public dialogRef: MatDialogRef<CommentsListComponent>,
@@ -23,9 +23,6 @@ export class CommentsListComponent implements OnInit {
 	) { }
 
   ngOnInit(): void {
-		console.log('====================================');
-		console.log("data",this.data);
-		console.log('====================================');
 		// this.comments = this.data.comments;
 		this.auth_user = this.data.auth_user;
 		this.articleId = this.data.articleId

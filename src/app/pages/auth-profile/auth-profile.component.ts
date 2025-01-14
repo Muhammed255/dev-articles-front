@@ -1,11 +1,11 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { EMPTY, Observable, Subscription } from 'rxjs';
 import { ArticlePostService } from 'src/app/services/article-post.service';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { filter } from 'rxjs/operators';
+import { catchError, filter, finalize, switchMap, tap } from 'rxjs/operators';
 import { AddEditPostComponent } from 'src/app/admin-pages/add-edit-post/add-edit-post.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
@@ -19,7 +19,8 @@ import { UsersListComponent } from '../components/users-list/users-list.componen
 export class AuthProfileComponent implements OnInit, OnDestroy {
   user: any;
   articles: any[];
-  isLoading = false;
+  bookmarked_articles: any[];
+  loading = signal(false);
   auth_user: any;
   isFollowingProfileUser = false;
 
@@ -27,6 +28,7 @@ export class AuthProfileComponent implements OnInit, OnDestroy {
   role = localStorage.getItem('role');
 
   articleSubListener: Subscription;
+  authSubscription: Subscription;
   private userSubscription: Subscription;
 
   constructor(
@@ -40,29 +42,45 @@ export class AuthProfileComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.getAuthUser();
+		this.authSubscription = this.authService.isAuthenticated$.subscribe({
+			next: (isAuth) => {
+				if(isAuth) {
+					this.getAuthUser();
+				}
+			}
+		})
     this.route.paramMap.subscribe((paramMap) => {
       if (paramMap.has('username')) {
         this.getUser(paramMap.get('username'));
       }
     });
+		this.loading.set(false);
 
+		// this.getBookmarks()
 
-    if (this.user?._id != this.authService.getUserId()) {
+    if (this.user?._id !== this.authService.getUserId()) {
 			this.showButtons = true;
     }
+
   }
+
+	getIsAuthUser() {
+		return this.user?._id === this.authService.getUserId()
+	}
 
   getUser(username: string) {
 		this.authService.findUserByUsername(username).subscribe((result) => {
-			this.user = result;
+			this.user = result.user;
+			this.articles = result.articles;
 			this.isFollowing(this.user?._id);
     });
-    this.articleSubListener = this.articleService.articles$.subscribe(
-      (result) => {
-        this.articles = result.articles;
-      }
-    );
+    // this.articleSubListener = this.articleService.articles$.subscribe(
+		// 	(result) => {
+		// 		console.log('====================================');
+		// 		console.log("Result", result);
+		// 		console.log('====================================');
+    //   }
+    // );
   }
 
   allLikedOrDisliked(item) {
@@ -72,20 +90,66 @@ export class AuthProfileComponent implements OnInit, OnDestroy {
     };
   }
 
-  getBookmarks(): any[] {
-    return this.user?.userLikedPosts.filter((ulp) => ulp.type === 'bookmark');
-  }
+  getBookmarks() {
 
-  getAuthUser() {
-    if (localStorage.getItem('userId')) {
-      this.authService.findUserById(localStorage.getItem('userId'));
-      this.userSubscription = this.authService.user$.subscribe((user) => {
-        this.auth_user = user;
-        this.cd.detectChanges();
-        console.log('Change detection triggered!');
-      });
-    }
+    // return this.user?.userLikedPosts?.filter((ulp) => ulp.type === 'bookmark');
   }
+// artId: 67164ef284ded438d9df50f5 userId: 6335f4c2614302001837522f
+
+getAuthUser(): Observable<void> {
+	const userId = this.authService.getUserId();
+
+	if (!userId || this.auth_user) {
+		return EMPTY;
+	}
+
+	this.loading.set(true);
+
+	this.authService.findUserById(userId).pipe(
+		tap((user) => {
+			this.auth_user = user;
+			this.loading.set(false);
+		}),
+		switchMap((user: any) =>
+			this.articleService.getAllArticlesByForAuth({
+				type: 'bookmark',
+				user: user?._id
+			}).pipe(
+				tap((response) => {
+					this.bookmarked_articles = response.articles;
+					this.loading.set(false);
+				})
+			)
+		),
+		catchError((error) => {
+			return EMPTY;
+		}),
+		finalize(() => {
+			this.loading.set(false);
+		})
+	).subscribe();
+	this.loading.set(false);
+}
+
+  // getAuthUser() {
+  //   if (localStorage.getItem('userId')) {
+  //     this.authService.findUserById(localStorage.getItem('userId'));
+  //     this.userSubscription = this.authService.user$.subscribe((user) => {
+  //       this.auth_user = user;
+	// 			this.cd.detectChanges();
+	// 			console.log('Change detection triggered!');
+	// 			this.articleService.getAllArticlesBy({type: 'bookmark', user: user?._id}).subscribe({
+	// 				next: (res) => {
+	// 					console.log('====================================');
+	// 					console.log("RES", res.articles);
+	// 					console.log('====================================');
+	// 					this.bookmarked_articles = res.articles
+	// 				},
+	// 				error: (err) => {}
+	// 			})
+  //     });
+  //   }
+  // }
 
   openAllLikedUsersDialog(users: { likers: any[]; dislikers: any[] }) {
     const dialogRef = this.dialog.open(UsersListComponent, {
@@ -97,10 +161,8 @@ export class AuthProfileComponent implements OnInit, OnDestroy {
     dialogRef
       .afterClosed()
       .pipe(filter((res) => typeof res === 'object'))
-      .subscribe((res) => {
-        console.log('====================================');
+      .subscribe((_) => {
         console.log('closed');
-        console.log('====================================');
       });
   }
 
@@ -173,12 +235,12 @@ export class AuthProfileComponent implements OnInit, OnDestroy {
     this.articleService.removeFromBookmarks(art._id).subscribe((data) => {
       if (data.success) {
         // Find the index of the bookmark to remove in the original bookmarks array
-        const index = this.user.userLikedPosts.findIndex(
+        const index = this.user.userLikedPosts?.findIndex(
           (ulp) => ulp.article._id === art._id && ulp.type === 'bookmark'
         );
         if (index !== -1) {
           // Remove the bookmark from the original array
-          this.user.userLikedPosts.splice(index, 1);
+          this.user.userLikedPosts?.splice(index, 1);
         }
       }
     });
@@ -215,9 +277,14 @@ export class AuthProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.articleSubListener.unsubscribe();
+		if(this.articleSubListener) {
+			this.articleSubListener.unsubscribe();
+		}
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
+		if(this.authSubscription) {
+			this.authSubscription.unsubscribe()
+		}
   }
 }

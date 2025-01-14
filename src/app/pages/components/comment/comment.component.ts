@@ -40,7 +40,7 @@ import { ReplyComponent } from '../reply/reply.component';
 })
 export class CommentComponent implements OnInit, OnChanges {
   comments: any[];
-  @Input() articleId?: number;
+  @Input() articleId?: string;
   @Input() slice_amount: number = 0;
   @Input() authUser: any;
   selectedReplyIndex = -1;
@@ -67,7 +67,7 @@ export class CommentComponent implements OnInit, OnChanges {
     if (this.articleId) {
       this.getLatestComments();
     } else {
-      this.comments = this.authUser?.comments;
+      this.getUserLatestComments()
     }
   }
 
@@ -126,19 +126,7 @@ export class CommentComponent implements OnInit, OnChanges {
 
   updateComment(commentId) {
     this.isLoading = true;
-    // Implement logic to save the edited comment
     this.commentService.editComment(commentId, this.commentText);
-    // .subscribe((res) => {
-    //   if (res.success) {
-    //     const index = this.comments.findIndex((c) => c._id === commentId);
-    //     this.comments[index] = res.updatedComment;
-    //     this.isLoading = false;
-    //     this.isEditing = false;
-    //     this.commentText = '';
-    //     this.snackBar.open(res.msg, 'Success', { duration: 3000 });
-    //     this.cd.detectChanges();
-    //   }
-    // });
   }
 
   getLatestComments() {
@@ -149,14 +137,16 @@ export class CommentComponent implements OnInit, OnChanges {
       this.isLoading = false;
       this.cd.detectChanges();
     });
-    // })
-    // .getArticleLatestComments(this.articleId, this.slice_amount)
-    // .subscribe((data) => {
-    //   this.comments = data.comments;
-    //   console.log('====================================');
-    //   console.log('comments', this.comments);
-    //   console.log('====================================');
-    // });
+  }
+
+	getUserLatestComments() {
+    this.isLoading = true;
+    this.commentService.getUserLatestComments();
+    this.commentService.getComments().subscribe((comments) => {
+      this.comments = comments;
+      this.isLoading = false;
+      this.cd.detectChanges();
+    });
   }
 
   cancelEdit() {

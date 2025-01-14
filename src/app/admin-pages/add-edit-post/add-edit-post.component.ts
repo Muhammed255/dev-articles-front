@@ -32,9 +32,6 @@ export class AddEditPostComponent implements OnInit {
   ngOnInit() {
     this.initForm();
     if (this.data) {
-			console.log('====================================');
-			console.log(this.data);
-			console.log('====================================');
       this.article = this.data.article;
 			this.isUpdate = true;
       this.data = {

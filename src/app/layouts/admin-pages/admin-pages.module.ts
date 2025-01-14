@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule, Routes } from "@angular/router";
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { AddEditPostComponent } from "src/app/admin-pages/add-edit-post/add-edit-post.component";
-import { AdminAuthGuard } from "src/app/guards/auth.guard";
+import { AdminAuthGuard } from "src/app/guards/admin-auth.guard";
 import { AuthProfileModule } from 'src/app/pages/auth-profile/auth-profile.module';
 import { SearchModule } from "src/app/pages/search/search.module";
 import { SidenavModule } from "src/app/theme/sidenav/sidenav.module";

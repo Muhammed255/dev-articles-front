@@ -10,11 +10,11 @@ export class AppComponent implements OnInit {
   title = 'developers-articles';
 
   constructor(private authService: AuthService) {
-    
+
   }
-  
+
 
   ngOnInit() {
-    this.authService.autoAuthUser();
+    this.authService.autoLogin();
   }
 }
